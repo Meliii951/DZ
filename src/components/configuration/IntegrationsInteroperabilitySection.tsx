@@ -178,26 +178,26 @@ export function IntegrationsInteroperabilitySection({ language = "fr" }: Integra
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {apiEndpoints.map((api, index) => (
-                  <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                    <div className="flex items-center gap-4">
+                  <div key={index} className="flex flex-col p-4 bg-gray-50 rounded-lg">
+                    <div className="flex items-center gap-4 mb-3">
                       <Badge variant="outline" className="font-mono">
                         {api.method}
                       </Badge>
-                      <code className="text-sm bg-white px-2 py-1 rounded">
-                        {api.endpoint}
-                      </code>
                       <Badge className={getStatusColor(api.status)}>
                         {api.status === 'active' ? 'Actif' : 'Maintenance'}
                       </Badge>
                     </div>
-                    <div className="flex items-center gap-6 text-sm">
-                      <div>
+                    <code className="text-sm bg-white px-2 py-1 rounded mb-3 break-all">
+                      {api.endpoint}
+                    </code>
+                    <div className="flex flex-col gap-2 text-sm">
+                      <div className="flex justify-between">
                         <span className="text-gray-600">Appels: </span>
                         <span className="font-medium">{api.calls}</span>
                       </div>
-                      <div>
+                      <div className="flex justify-between">
                         <span className="text-gray-600">Temps moyen: </span>
                         <span className="font-medium">{api.avgTime}</span>
                       </div>

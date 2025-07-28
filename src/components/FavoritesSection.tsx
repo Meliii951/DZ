@@ -140,11 +140,11 @@ export function FavoritesSection() {
                     </div>
                   </div>
                   
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                     <Button 
                       variant="outline" 
                       size="sm" 
-                      className="gap-2"
+                      className="gap-2 flex-shrink-0"
                       onClick={buttonHandlers.viewDocument(item.id, item.title, item.type)}
                     >
                       <Eye className="w-4 h-4" />
@@ -153,27 +153,30 @@ export function FavoritesSection() {
                     <Button 
                       variant="outline" 
                       size="sm" 
-                      className="gap-2"
+                      className="gap-2 flex-shrink-0"
                       onClick={buttonHandlers.downloadDocument(item.id, item.title)}
                     >
                       <Download className="w-4 h-4" />
                       Télécharger
                     </Button>
-                    <Button 
-                      variant="ghost" 
-                      size="sm"
-                      onClick={buttonHandlers.shareDocument(item.id, item.title)}
-                    >
-                      <Share className="w-4 h-4" />
-                    </Button>
-                    <Button 
-                      variant="ghost" 
-                      size="sm" 
-                      className="text-red-600 hover:text-red-700"
-                      onClick={buttonHandlers.removeFromFavorites(item.title)}
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
+                    <div className="flex gap-1 ml-auto">
+                      <Button 
+                        variant="ghost" 
+                        size="sm"
+                        className="p-2 h-8 w-8"
+                        onClick={buttonHandlers.shareDocument(item.id, item.title)}
+                      >
+                        <Share className="w-4 h-4" />
+                      </Button>
+                      <Button 
+                        variant="ghost" 
+                        size="sm" 
+                        className="text-red-600 hover:text-red-700 p-2 h-8 w-8"
+                        onClick={buttonHandlers.removeFromFavorites(item.title)}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
                   </div>
                 </div>
               </CardContent>

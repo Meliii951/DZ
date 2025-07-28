@@ -67,10 +67,11 @@ export function SavedSearchCard({ search }: SavedSearchCardProps) {
             </div>
           </div>
           
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2">
             <Button 
               variant="outline" 
               size="sm"
+              className="flex-shrink-0"
               onClick={buttonHandlers.editSavedSearch(search.title)}
             >
               <Edit className="w-4 h-4 mr-2" />
@@ -79,6 +80,7 @@ export function SavedSearchCard({ search }: SavedSearchCardProps) {
             <Button 
               variant="outline" 
               size="sm"
+              className="flex-shrink-0"
               onClick={buttonHandlers.executeSavedSearch(search.title)}
             >
               <Search className="w-4 h-4 mr-2" />
@@ -87,7 +89,7 @@ export function SavedSearchCard({ search }: SavedSearchCardProps) {
             <Button 
               variant="outline" 
               size="sm" 
-              className="text-red-600 hover:text-red-700"
+              className="text-red-600 hover:text-red-700 flex-shrink-0"
               onClick={buttonHandlers.deleteSavedSearch(search.title)}
             >
               <Trash2 className="w-4 h-4" />

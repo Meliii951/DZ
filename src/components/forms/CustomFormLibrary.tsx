@@ -209,10 +209,11 @@ export function CustomFormLibrary() {
                         </Badge>
                       </div>
                     </div>
-                    <div className="flex gap-2 ml-4">
+                    <div className="flex flex-wrap gap-2 ml-4">
                       <Button
                         size="sm"
                         variant="outline"
+                        className="flex-shrink-0"
                         onClick={() => handleStar(template.id)}
                       >
                         <Star className="w-4 h-4" />
@@ -220,6 +221,7 @@ export function CustomFormLibrary() {
                       <Button
                         size="sm"
                         variant="outline"
+                        className="flex-shrink-0"
                         onClick={() => {
                           // Ouvrir l'éditeur de modèle
                           window.dispatchEvent(new CustomEvent('edit-template', {
@@ -231,6 +233,7 @@ export function CustomFormLibrary() {
                       </Button>
                       <Button
                         size="sm"
+                        className="flex-shrink-0"
                         onClick={() => handleDownload(template)}
                       >
                         <Download className="w-4 h-4 mr-2" />
