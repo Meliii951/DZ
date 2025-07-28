@@ -5,6 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FormGeneratorTab } from "./FormGeneratorTab";
+import { Pagination } from "@/components/common/Pagination";
+import { usePagination } from "@/hooks/usePagination";
 import { useState } from "react";
 import { 
   Settings, 
@@ -292,10 +294,47 @@ export function NomenclatureSection({ language = "fr" }: NomenclatureSectionProp
     sig.organization.toLowerCase().includes(signatoriesFilter.toLowerCase())
   );
 
-  // Pagination pour les types de textes (10 par page)
-  const legalTypesPerPage = 10;
-  const totalLegalTypesPages = Math.ceil(filteredLegalTypes.length / legalTypesPerPage);
-  const startLegalTypesIndex = (currentLegalTypesPage - 1) * legalTypesPerPage;
+  // Pagination pour les types de textes
+  const {
+    currentData: paginatedLegalTypes,
+    currentPage: legalTypesCurrentPage,
+    totalPages: legalTypesTotalPages,
+    itemsPerPage: legalTypesItemsPerPage,
+    totalItems: legalTypesTotalItems,
+    setCurrentPage: setLegalTypesCurrentPage,
+    setItemsPerPage: setLegalTypesItemsPerPage
+  } = usePagination({
+    data: filteredLegalTypes,
+    itemsPerPage: 10
+  });
+
+  // Pagination pour les organisations
+  const {
+    currentData: paginatedOrganizations,
+    currentPage: organizationsCurrentPage,
+    totalPages: organizationsTotalPages,
+    itemsPerPage: organizationsItemsPerPage,
+    totalItems: organizationsTotalItems,
+    setCurrentPage: setOrganizationsCurrentPage,
+    setItemsPerPage: setOrganizationsItemsPerPage
+  } = usePagination({
+    data: filteredOrganizations,
+    itemsPerPage: 10
+  });
+
+  // Pagination pour les signataires
+  const {
+    currentData: paginatedSignatories,
+    currentPage: signatoriesCurrentPage,
+    totalPages: signatoriesTotalPages,
+    itemsPerPage: signatoriesItemsPerPage,
+    totalItems: signatoriesTotalItems,
+    setCurrentPage: setSignatoriesCurrentPage,
+    setItemsPerPage: setSignatoriesItemsPerPage
+  } = usePagination({
+    data: filteredSignatories,
+    itemsPerPage: 10
+  });
   const endLegalTypesIndex = startLegalTypesIndex + legalTypesPerPage;
   const currentLegalTypes = filteredLegalTypes.slice(startLegalTypesIndex, endLegalTypesIndex);
 
@@ -428,49 +467,53 @@ export function NomenclatureSection({ language = "fr" }: NomenclatureSectionProp
             </Button>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {currentLegalTypes.map((type, index) => (
-              <Card key={index}>
-                <CardContent className="pt-6">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <h4 className="font-semibold text-gray-900">{type.name}</h4>
-                        <Badge variant="outline">{type.code}</Badge>
-                        <Badge className="bg-green-100 text-green-800">{type.status}</Badge>
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {paginatedLegalTypes.map((type, index) => (
+                <Card key={index}>
+                  <CardContent className="pt-6">
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2">
+                          <h4 className="font-semibold text-gray-900">{type.name}</h4>
+                          <Badge variant="outline">{type.code}</Badge>
+                          <Badge className="bg-green-100 text-green-800">{type.status}</Badge>
+                        </div>
+                        <p className="text-gray-600 text-sm mb-2">{type.description}</p>
+                        <p className="text-xs text-gray-500">{type.count} textes associés</p>
                       </div>
-                      <p className="text-gray-600 text-sm mb-2">{type.description}</p>
-                      <p className="text-xs text-gray-500">{type.count} textes associés</p>
+                      <div className="flex gap-2">
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={buttonHandlers.generic(`Modifier type: ${type.name}`, 'Modification du type de texte', 'Configuration')}
+                        >
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={buttonHandlers.generic(`Supprimer type: ${type.name}`, 'Suppression du type de texte', 'Configuration')}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
                     </div>
-                    <div className="flex gap-2">
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        onClick={buttonHandlers.generic(`Modifier type: ${type.name}`, 'Modification du type de texte', 'Configuration')}
-                      >
-                        <Edit className="w-4 h-4" />
-                      </Button>
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        onClick={buttonHandlers.generic(`Supprimer type: ${type.name}`, 'Suppression du type de texte', 'Configuration')}
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-          
-          {totalLegalTypesPages > 1 && (
-            <PaginationControls
-              currentPage={currentLegalTypesPage}
-              totalPages={totalLegalTypesPages}
-              onPageChange={setCurrentLegalTypesPage}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+            
+            {/* Pagination pour les types de textes */}
+            <Pagination
+              currentPage={legalTypesCurrentPage}
+              totalPages={legalTypesTotalPages}
+              totalItems={legalTypesTotalItems}
+              itemsPerPage={legalTypesItemsPerPage}
+              onPageChange={setLegalTypesCurrentPage}
+              onItemsPerPageChange={setLegalTypesItemsPerPage}
             />
-          )}
+          </div>
         </TabsContent>
 
         <TabsContent value="procedures" className="space-y-4">
@@ -585,41 +628,45 @@ export function NomenclatureSection({ language = "fr" }: NomenclatureSectionProp
             </Button>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {currentOrganizations.map((org, index) => (
-              <Card key={index}>
-                <CardContent className="pt-6">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <h4 className="font-semibold text-gray-900">{org.name}</h4>
-                        <Badge variant="outline">{org.code}</Badge>
-                        <Badge className="bg-green-100 text-green-800">{org.status}</Badge>
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {paginatedOrganizations.map((org, index) => (
+                <Card key={index}>
+                  <CardContent className="pt-6">
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2">
+                          <h4 className="font-semibold text-gray-900">{org.name}</h4>
+                          <Badge variant="outline">{org.code}</Badge>
+                          <Badge className="bg-green-100 text-green-800">{org.status}</Badge>
+                        </div>
+                        <p className="text-gray-600 text-sm mb-2">{org.description}</p>
+                        <p className="text-xs text-gray-500">{org.count} documents associés</p>
                       </div>
-                      <p className="text-gray-600 text-sm mb-2">{org.description}</p>
-                      <p className="text-xs text-gray-500">{org.count} documents associés</p>
+                      <div className="flex gap-2">
+                        <Button variant="outline" size="sm">
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                        <Button variant="outline" size="sm">
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
                     </div>
-                    <div className="flex gap-2">
-                      <Button variant="outline" size="sm">
-                        <Edit className="w-4 h-4" />
-                      </Button>
-                      <Button variant="outline" size="sm">
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-          
-          {totalOrganizationsPages > 1 && (
-            <PaginationControls
-              currentPage={currentOrganizationsPage}
-              totalPages={totalOrganizationsPages}
-              onPageChange={setCurrentOrganizationsPage}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+            
+            {/* Pagination pour les organisations */}
+            <Pagination
+              currentPage={organizationsCurrentPage}
+              totalPages={organizationsTotalPages}
+              totalItems={organizationsTotalItems}
+              itemsPerPage={organizationsItemsPerPage}
+              onPageChange={setOrganizationsCurrentPage}
+              onItemsPerPageChange={setOrganizationsItemsPerPage}
             />
-          )}
+          </div>
         </TabsContent>
 
         <TabsContent value="signatories" className="space-y-4">
@@ -642,42 +689,46 @@ export function NomenclatureSection({ language = "fr" }: NomenclatureSectionProp
             </Button>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {currentSignatories.map((sig, index) => (
-              <Card key={index}>
-                <CardContent className="pt-6">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <UserCheck className="w-4 h-4 text-blue-600" />
-                        <h4 className="font-semibold text-gray-900">{sig.name}</h4>
-                        <Badge className="bg-green-100 text-green-800">{sig.status}</Badge>
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {paginatedSignatories.map((sig, index) => (
+                <Card key={index}>
+                  <CardContent className="pt-6">
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2 mb-2">
+                          <UserCheck className="w-4 h-4 text-blue-600" />
+                          <h4 className="font-semibold text-gray-900">{sig.name}</h4>
+                          <Badge className="bg-green-100 text-green-800">{sig.status}</Badge>
+                        </div>
+                        <p className="text-sm font-medium text-blue-600 mb-1">{sig.position}</p>
+                        <p className="text-gray-600 text-sm mb-2">{sig.organization}</p>
+                        <p className="text-xs text-gray-500">{sig.count} documents signés</p>
                       </div>
-                      <p className="text-sm font-medium text-blue-600 mb-1">{sig.position}</p>
-                      <p className="text-gray-600 text-sm mb-2">{sig.organization}</p>
-                      <p className="text-xs text-gray-500">{sig.count} documents signés</p>
+                      <div className="flex gap-2">
+                        <Button variant="outline" size="sm">
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                        <Button variant="outline" size="sm">
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
                     </div>
-                    <div className="flex gap-2">
-                      <Button variant="outline" size="sm">
-                        <Edit className="w-4 h-4" />
-                      </Button>
-                      <Button variant="outline" size="sm">
-                        <Trash2 className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-          
-          {totalSignatoriesPages > 1 && (
-            <PaginationControls
-              currentPage={currentSignatoriesPage}
-              totalPages={totalSignatoriesPages}
-              onPageChange={setCurrentSignatoriesPage}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+            
+            {/* Pagination pour les signataires */}
+            <Pagination
+              currentPage={signatoriesCurrentPage}
+              totalPages={signatoriesTotalPages}
+              totalItems={signatoriesTotalItems}
+              itemsPerPage={signatoriesItemsPerPage}
+              onPageChange={setSignatoriesCurrentPage}
+              onItemsPerPageChange={setSignatoriesItemsPerPage}
             />
-          )}
+          </div>
         </TabsContent>
 
         <TabsContent value="form-generator">
