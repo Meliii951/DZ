@@ -5,6 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Pagination } from "@/components/common/Pagination";
+import { usePagination } from "@/hooks/usePagination";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { 
@@ -72,7 +74,14 @@ export function AlertsNotificationsSection({ language = "fr" }: AlertsNotificati
     { id: 2, title: "Arrêté ministériel - Sécurité routière", type: "regulation", priority: "medium", date: "2025-01-05", status: "active", channels: ["Email"] },
     { id: 3, title: "Circulaire fiscale 2025", type: "circular", priority: "high", date: "2025-01-04", status: "sent", channels: ["Email", "Teams"] },
     { id: 4, title: "Jurisprudence Conseil d'État", type: "jurisprudence", priority: "low", date: "2025-01-03", status: "scheduled", channels: ["Push"] },
-    { id: 5, title: "Nouvelle réglementation RGPD", type: "law", priority: "high", date: "2025-01-02", status: "active", channels: ["Email", "SMS"] }
+    { id: 5, title: "Nouvelle réglementation RGPD", type: "law", priority: "high", date: "2025-01-02", status: "active", channels: ["Email", "SMS"] },
+    { id: 6, title: "Loi sur la transition énergétique", type: "law", priority: "medium", date: "2025-01-01", status: "active", channels: ["Email", "Push"] },
+    { id: 7, title: "Décret sur la protection des données", type: "regulation", priority: "high", date: "2024-12-31", status: "sent", channels: ["Email", "SMS"] },
+    { id: 8, title: "Arrêté sur les marchés publics", type: "regulation", priority: "medium", date: "2024-12-30", status: "active", channels: ["Email"] },
+    { id: 9, title: "Circulaire sur la sécurité informatique", type: "circular", priority: "low", date: "2024-12-29", status: "scheduled", channels: ["Push"] },
+    { id: 10, title: "Jurisprudence Cour de Cassation", type: "jurisprudence", priority: "high", date: "2024-12-28", status: "active", channels: ["Email", "Teams"] },
+    { id: 11, title: "Loi sur l'économie numérique", type: "law", priority: "medium", date: "2024-12-27", status: "active", channels: ["Email"] },
+    { id: 12, title: "Décret sur la formation professionnelle", type: "regulation", priority: "low", date: "2024-12-26", status: "sent", channels: ["Email", "Push"] }
   ];
 
   // Alertes personnalisées par domaine juridique
@@ -81,7 +90,14 @@ export function AlertsNotificationsSection({ language = "fr" }: AlertsNotificati
     { id: 2, name: "Droit Commercial", domain: "commercial", keywords: ["contrat", "société", "commerce"], active: true, notifications: 23 },
     { id: 3, name: "Droit Fiscal", domain: "fiscal", keywords: ["impôt", "taxe", "TVA"], active: false, notifications: 12 },
     { id: 4, name: "Droit de l'Environnement", domain: "environnement", keywords: ["pollution", "énergie", "déchets"], active: true, notifications: 8 },
-    { id: 5, name: "Marchés Publics", domain: "marches", keywords: ["appel d'offres", "marché", "concession"], active: true, notifications: 34 }
+    { id: 5, name: "Marchés Publics", domain: "marches", keywords: ["appel d'offres", "marché", "concession"], active: true, notifications: 34 },
+    { id: 6, name: "Droit de la Santé", domain: "sante", keywords: ["médical", "pharmacie", "hôpital"], active: true, notifications: 19 },
+    { id: 7, name: "Droit de l'Éducation", domain: "education", keywords: ["école", "université", "formation"], active: false, notifications: 7 },
+    { id: 8, name: "Droit de l'Immobilier", domain: "immobilier", keywords: ["bail", "propriété", "construction"], active: true, notifications: 28 },
+    { id: 9, name: "Droit Bancaire", domain: "bancaire", keywords: ["banque", "crédit", "assurance"], active: true, notifications: 15 },
+    { id: 10, name: "Droit de la Consommation", domain: "consommation", keywords: ["client", "garantie", "réparation"], active: true, notifications: 31 },
+    { id: 11, name: "Droit de l'Agriculture", domain: "agriculture", keywords: ["ferme", "subvention", "terres"], active: false, notifications: 4 },
+    { id: 12, name: "Droit Maritime", domain: "maritime", keywords: ["port", "navire", "pêche"], active: true, notifications: 11 }
   ].filter(alert => 
     (selectedDomain === "all" || alert.domain === selectedDomain) &&
     alert.name.toLowerCase().includes(alertsFilter.toLowerCase())
@@ -93,7 +109,14 @@ export function AlertsNotificationsSection({ language = "fr" }: AlertsNotificati
     { id: 2, title: "Arrêté ministériel - Sécurité routière", type: "regulation", priority: "medium", time: "Il y a 4h", read: false },
     { id: 3, title: "Circulaire fiscale 2025", type: "circular", priority: "high", time: "Il y a 6h", read: true },
     { id: 4, title: "Jurisprudence Conseil d'État", type: "jurisprudence", priority: "low", time: "Hier", read: true },
-    { id: 5, title: "Nouvelle réglementation RGPD", type: "law", priority: "high", time: "Il y a 1j", read: false }
+    { id: 5, title: "Nouvelle réglementation RGPD", type: "law", priority: "high", time: "Il y a 1j", read: false },
+    { id: 6, title: "Loi sur la transition énergétique", type: "law", priority: "medium", time: "Il y a 2j", read: false },
+    { id: 7, title: "Décret sur la protection des données", type: "regulation", priority: "high", time: "Il y a 3j", read: true },
+    { id: 8, title: "Arrêté sur les marchés publics", type: "regulation", priority: "medium", time: "Il y a 4j", read: false },
+    { id: 9, title: "Circulaire sur la sécurité informatique", type: "circular", priority: "low", time: "Il y a 5j", read: true },
+    { id: 10, title: "Jurisprudence Cour de Cassation", type: "jurisprudence", priority: "high", time: "Il y a 1 semaine", read: false },
+    { id: 11, title: "Loi sur l'économie numérique", type: "law", priority: "medium", time: "Il y a 1 semaine", read: true },
+    { id: 12, title: "Décret sur la formation professionnelle", type: "regulation", priority: "low", time: "Il y a 2 semaines", read: false }
   ].filter(notif => 
     selectedPriority === "all" || notif.priority === selectedPriority
   );
@@ -157,6 +180,48 @@ export function AlertsNotificationsSection({ language = "fr" }: AlertsNotificati
     }
   };
 
+  // Pagination pour les alertes générales
+  const {
+    currentData: paginatedGeneralAlerts,
+    currentPage: generalAlertsCurrentPage,
+    totalPages: generalAlertsTotalPages,
+    itemsPerPage: generalAlertsItemsPerPage,
+    totalItems: generalAlertsTotalItems,
+    setCurrentPage: setGeneralAlertsCurrentPage,
+    setItemsPerPage: setGeneralAlertsItemsPerPage
+  } = usePagination({
+    data: generalAlerts,
+    itemsPerPage: 10
+  });
+
+  // Pagination pour les alertes personnalisées
+  const {
+    currentData: paginatedPersonalizedAlerts,
+    currentPage: personalizedAlertsCurrentPage,
+    totalPages: personalizedAlertsTotalPages,
+    itemsPerPage: personalizedAlertsItemsPerPage,
+    totalItems: personalizedAlertsTotalItems,
+    setCurrentPage: setPersonalizedAlertsCurrentPage,
+    setItemsPerPage: setPersonalizedAlertsItemsPerPage
+  } = usePagination({
+    data: personalizedAlerts,
+    itemsPerPage: 10
+  });
+
+  // Pagination pour les notifications push
+  const {
+    currentData: paginatedPushNotifications,
+    currentPage: pushNotificationsCurrentPage,
+    totalPages: pushNotificationsTotalPages,
+    itemsPerPage: pushNotificationsItemsPerPage,
+    totalItems: pushNotificationsTotalItems,
+    setCurrentPage: setPushNotificationsCurrentPage,
+    setItemsPerPage: setPushNotificationsItemsPerPage
+  } = usePagination({
+    data: pushNotifications,
+    itemsPerPage: 10
+  });
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -214,8 +279,9 @@ export function AlertsNotificationsSection({ language = "fr" }: AlertsNotificati
             </Button>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {generalAlerts.map((alert) => (
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              {paginatedGeneralAlerts.map((alert) => (
               <Card key={alert.id} className="hover:shadow-md transition-shadow">
                 <CardContent className="pt-4">
                   <div className="flex flex-col gap-3">
@@ -254,6 +320,16 @@ export function AlertsNotificationsSection({ language = "fr" }: AlertsNotificati
               </Card>
             ))}
           </div>
+          
+          {/* Pagination pour les alertes générales */}
+          <Pagination
+            currentPage={generalAlertsCurrentPage}
+            totalPages={generalAlertsTotalPages}
+            totalItems={generalAlertsTotalItems}
+            itemsPerPage={generalAlertsItemsPerPage}
+            onPageChange={setGeneralAlertsCurrentPage}
+            onItemsPerPageChange={setGeneralAlertsItemsPerPage}
+          />
         </TabsContent>
 
         {/* Alertes personnalisées par domaine juridique */}
@@ -289,8 +365,9 @@ export function AlertsNotificationsSection({ language = "fr" }: AlertsNotificati
             </Button>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {personalizedAlerts.map((alert) => (
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {paginatedPersonalizedAlerts.map((alert) => (
               <Card key={alert.id}>
                 <CardHeader className="pb-4">
                   <div className="flex items-center justify-between">
@@ -328,6 +405,16 @@ export function AlertsNotificationsSection({ language = "fr" }: AlertsNotificati
               </Card>
             ))}
           </div>
+          
+          {/* Pagination pour les alertes personnalisées */}
+          <Pagination
+            currentPage={personalizedAlertsCurrentPage}
+            totalPages={personalizedAlertsTotalPages}
+            totalItems={personalizedAlertsTotalItems}
+            itemsPerPage={personalizedAlertsItemsPerPage}
+            onPageChange={setPersonalizedAlertsCurrentPage}
+            onItemsPerPageChange={setPersonalizedAlertsItemsPerPage}
+          />
         </TabsContent>
 
         {/* Notifications push */}
@@ -357,8 +444,9 @@ export function AlertsNotificationsSection({ language = "fr" }: AlertsNotificati
             </div>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {pushNotifications.map((notification) => (
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              {paginatedPushNotifications.map((notification) => (
               <Card key={notification.id} className={cn(
                 "transition-all cursor-pointer hover:shadow-md",
                 !notification.read && "border-l-4 border-l-blue-500 bg-blue-50/30"
@@ -398,6 +486,16 @@ export function AlertsNotificationsSection({ language = "fr" }: AlertsNotificati
               </Card>
             ))}
           </div>
+          
+          {/* Pagination pour les notifications push */}
+          <Pagination
+            currentPage={pushNotificationsCurrentPage}
+            totalPages={pushNotificationsTotalPages}
+            totalItems={pushNotificationsTotalItems}
+            itemsPerPage={pushNotificationsItemsPerPage}
+            onPageChange={setPushNotificationsCurrentPage}
+            onItemsPerPageChange={setPushNotificationsItemsPerPage}
+          />
         </TabsContent>
 
         {/* Calendrier des échéances réglementaires */}
