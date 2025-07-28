@@ -270,44 +270,6 @@ export function LegalTextsPopularSearchesTab() {
     data: popularItems,
     itemsPerPage: 10
   });
-      category: "Commercial",
-      wilaya: "National",
-      trend: "+15%", 
-      description: "Activités commerciales et sociétés"
-    },
-    {
-      query: "Code du travail",
-      count: "25,876 recherches",
-      category: "Social",
-      wilaya: "National",
-      trend: "+22%",
-      description: "Relations de travail et emploi"
-    },
-    {
-      query: "Code de la famille", 
-      count: "23,234 recherches",
-      category: "Personnel",
-      wilaya: "National",
-      trend: "+7%",
-      description: "Statut personnel et famille"
-    },
-    {
-      query: "Code de l'investissement",
-      count: "18,456 recherches",
-      category: "Économique",
-      wilaya: "National", 
-      trend: "+28%",
-      description: "Promotion de l'investissement"
-    },
-    {
-      query: "Code de procédure civile",
-      count: "16,789 recherches",
-      category: "Procédure",
-      wilaya: "National",
-      trend: "+11%",
-      description: "Procédures judiciaires civiles"
-    }
-  ];
 
   const statistics = {
     monthlySearches: "1.2M",
