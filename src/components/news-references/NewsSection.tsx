@@ -1,9 +1,11 @@
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { TabFormField } from '@/components/common/TabFormField';
+import { Pagination } from '@/components/common/Pagination';
+import { usePagination } from '@/hooks/usePagination';
 import { Newspaper, Calendar, TrendingUp, Users, FileText, Settings } from 'lucide-react';
 import { AddNewsForm } from '@/components/forms/AddNewsForm';
 import { useGlobalActions } from '@/hooks/useGlobalActions';

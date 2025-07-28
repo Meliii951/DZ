@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -6,6 +6,8 @@ import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ForumActionModal } from '@/components/modals/ForumActionModal';
+import { Pagination } from '@/components/common/Pagination';
+import { usePagination } from '@/hooks/usePagination';
 import {
   MessageSquare,
   Users,
@@ -29,6 +31,30 @@ export function EnhancedForum() {
     setModalAction(action);
     setShowModal(true);
   };
+
+  // Filtrer les discussions basées sur la recherche
+  const filteredDiscussions = useMemo(() => {
+    return forumData.filter(discussion =>
+      discussion.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      discussion.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      discussion.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      discussion.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+    );
+  }, [forumData, searchQuery]);
+
+  // Pagination
+  const {
+    currentData: paginatedDiscussions,
+    currentPage,
+    totalPages,
+    itemsPerPage,
+    totalItems,
+    setCurrentPage,
+    setItemsPerPage
+  } = usePagination({
+    data: filteredDiscussions,
+    itemsPerPage: 10
+  });
 
   const forumData = [
     {
@@ -221,53 +247,69 @@ export function EnhancedForum() {
           <TabsTrigger value="resolved">Résolues</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="all" className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          {filteredDiscussions.map((discussion) => (
-            <Card key={discussion.id} className="hover:shadow-md transition-shadow">
-              <CardContent className="pt-6">
-                <div className="flex justify-between items-start">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <h3 className="text-lg font-semibold text-gray-900 hover:text-blue-600 cursor-pointer" onClick={() => window.dispatchEvent(new CustomEvent('view-forum-discussion', {detail: {discussionId: discussion.id.toString(), title: discussion.title}}))}>
-                        {discussion.title}
-                      </h3>
-                      <Badge variant={discussion.status === 'active' ? 'default' : 'secondary'}>
-                        {discussion.status === 'active' ? 'Actif' : 'Résolu'}
-                      </Badge>
-                    </div>
-                    
-                    <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
-                      <span>Par {discussion.author}</span>
-                      <Badge variant="outline">{discussion.category}</Badge>
-                      <div className="flex items-center gap-1">
-                        <Clock className="w-4 h-4" />
-                        {discussion.lastActivity}
+        <TabsContent value="all" className="space-y-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {paginatedDiscussions.map((discussion) => (
+              <Card key={discussion.id} className="hover:shadow-md transition-shadow">
+                <CardContent className="pt-6">
+                  <div className="flex justify-between items-start">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-2">
+                        <h3 className="text-lg font-semibold text-gray-900 hover:text-blue-600 cursor-pointer" onClick={() => window.dispatchEvent(new CustomEvent('view-forum-discussion', {detail: {discussionId: discussion.id.toString(), title: discussion.title}}))}>
+                          {discussion.title}
+                        </h3>
+                        <Badge variant={discussion.status === 'active' ? 'default' : 'secondary'}>
+                          {discussion.status === 'active' ? 'Actif' : 'Résolu'}
+                        </Badge>
+                      </div>
+                      
+                      <div className="flex items-center gap-4 text-sm text-gray-600 mb-3">
+                        <span>Par {discussion.author}</span>
+                        <Badge variant="outline">{discussion.category}</Badge>
+                        <div className="flex items-center gap-1">
+                          <Clock className="w-4 h-4" />
+                          {discussion.lastActivity}
+                        </div>
+                      </div>
+                      
+                      <div className="flex gap-2 flex-wrap">
+                        {discussion.tags.map((tag, index) => (
+                          <Badge key={index} variant="secondary" className="text-xs">
+                            {tag}
+                          </Badge>
+                        ))}
                       </div>
                     </div>
                     
-                    <div className="flex gap-2 flex-wrap">
-                      {discussion.tags.map((tag, index) => (
-                        <Badge key={index} variant="secondary" className="text-xs">
-                          {tag}
-                        </Badge>
-                      ))}
+                    <div className="text-right text-sm text-gray-600">
+                      <div className="flex items-center gap-1 mb-1">
+                        <MessageCircle className="w-4 h-4" />
+                        {discussion.replies} réponses
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Eye className="w-4 h-4" />
+                        {discussion.views} vues
+                      </div>
                     </div>
                   </div>
-                  
-                  <div className="text-right text-sm text-gray-600">
-                    <div className="flex items-center gap-1 mb-1">
-                      <MessageCircle className="w-4 h-4" />
-                      {discussion.replies} réponses
-                    </div>
-                    <div className="flex items-center gap-1">
-                      <Eye className="w-4 h-4" />
-                      {discussion.views} vues
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* Pagination */}
+          {filteredDiscussions.length > 0 && (
+            <div className="mt-6">
+              <Pagination
+                currentPage={currentPage}
+                totalPages={totalPages}
+                totalItems={totalItems}
+                itemsPerPage={itemsPerPage}
+                onPageChange={setCurrentPage}
+                onItemsPerPageChange={setItemsPerPage}
+              />
+            </div>
+          )}
         </TabsContent>
 
         <TabsContent value="popular" className="grid grid-cols-1 lg:grid-cols-2 gap-4">

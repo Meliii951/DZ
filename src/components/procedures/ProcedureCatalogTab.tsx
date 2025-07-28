@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Plus, FileText, Users, Building, Clock, Star, Filter, SortAsc, Eye, Scale, BookOpen, Heart, Upload, Quote, Search, Download, Share2 } from 'lucide-react';
 import { TabSearchField } from '@/components/common/TabSearchField';
+import { Pagination } from '@/components/common/Pagination';
+import { usePagination } from '@/hooks/usePagination';
 import { Input } from '@/components/ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { SimpleFilterModal } from '../legal/modals/SimpleFilterModal';
@@ -415,6 +417,20 @@ export function ProcedureCatalogTab({ onAddProcedure, onOpenApprovalQueue }: Pro
     return matchesSearch && matchesQuickSearch && matchesType && matchesStatus && matchesDigitization;
   });
 
+  // Pagination
+  const {
+    currentData: paginatedProcedures,
+    currentPage,
+    totalPages,
+    itemsPerPage,
+    totalItems,
+    setCurrentPage,
+    setItemsPerPage
+  } = usePagination({
+    data: filteredProcedures,
+    itemsPerPage: 10
+  });
+
   const getColorClasses = (color: string) => {
     const colors = {
       emerald: { bg: "bg-emerald-100", text: "text-emerald-600", button: "bg-emerald-600 hover:bg-emerald-700" },
@@ -628,67 +644,83 @@ export function ProcedureCatalogTab({ onAddProcedure, onOpenApprovalQueue }: Pro
         </CardContent>
       </Card>
 
-      {/* Liste des procédures */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {filteredProcedures.map((procedure) => (
-          <Card key={procedure.id} className="hover:shadow-md transition-shadow">
-            <CardContent className="p-6">
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-2">
-                    <h3 className="text-lg font-semibold text-gray-900">{procedure.title}</h3>
-                    <Badge variant="secondary">{procedure.category}</Badge>
-                    <div className="flex items-center gap-1">
-                      <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                      <span className="text-sm text-gray-600">{procedure.popularity}%</span>
+      {/* Liste des procédures avec pagination */}
+      <div className="space-y-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          {paginatedProcedures.map((procedure) => (
+            <Card key={procedure.id} className="hover:shadow-md transition-shadow">
+              <CardContent className="p-6">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-2">
+                      <h3 className="text-lg font-semibold text-gray-900">{procedure.title}</h3>
+                      <Badge variant="secondary">{procedure.category}</Badge>
+                      <div className="flex items-center gap-1">
+                        <Star className="w-4 h-4 text-yellow-500 fill-current" />
+                        <span className="text-sm text-gray-600">{procedure.popularity}%</span>
+                      </div>
+                      <Badge 
+                        variant={
+                          procedure.digitization === 'yes' ? 'default' :
+                          procedure.digitization === 'partially' ? 'secondary' : 'destructive'
+                        }
+                        className="text-xs"
+                      >
+                        {procedure.digitization === 'yes' ? 'Numérisée' : 
+                         procedure.digitization === 'partially' ? 'Partiellement' : 'Non numérisée'}
+                      </Badge>
                     </div>
-                    <Badge 
-                      variant={
-                        procedure.digitization === 'yes' ? 'default' :
-                        procedure.digitization === 'partially' ? 'secondary' : 'destructive'
-                      }
-                      className="text-xs"
-                    >
-                      {procedure.digitization === 'yes' ? 'Numérisée' : 
-                       procedure.digitization === 'partially' ? 'Partiellement' : 'Non numérisée'}
-                    </Badge>
-                  </div>
-                  <p className="text-gray-600 mb-3">{procedure.description}</p>
-                  <div className="flex items-center gap-4 text-sm text-gray-500">
-                    <div className="flex items-center gap-1">
-                      <Clock className="w-4 h-4" />
-                      <span>Durée: {procedure.duration}</span>
-                    </div>
-                    <div>
-                      Complexité: <Badge variant={
-                        procedure.complexity === 'Faible' ? 'default' :
-                        procedure.complexity === 'Moyenne' ? 'secondary' : 'destructive'
-                      }>{procedure.complexity}</Badge>
+                    <p className="text-gray-600 mb-3">{procedure.description}</p>
+                    <div className="flex items-center gap-4 text-sm text-gray-500">
+                      <div className="flex items-center gap-1">
+                        <Clock className="w-4 h-4" />
+                        <span>Durée: {procedure.duration}</span>
+                      </div>
+                      <div>
+                        Complexité: <Badge variant={
+                          procedure.complexity === 'Faible' ? 'default' :
+                          procedure.complexity === 'Moyenne' ? 'secondary' : 'destructive'
+                        }>{procedure.complexity}</Badge>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="flex gap-2 mt-4 justify-end">
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  onClick={() => handleViewProcedure(procedure)}
-                >
-                  <Eye className="w-4 h-4 mr-1" />
-                  Consulter
-                </Button>
-                <Button variant="outline" size="sm">
-                  <Download className="w-4 h-4 mr-1" />
-                  Télécharger
-                </Button>
-                <Button variant="outline" size="sm">
-                  <Share2 className="w-4 h-4 mr-1" />
-                  Partager
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+                <div className="flex gap-2 mt-4 justify-end">
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    onClick={() => handleViewProcedure(procedure)}
+                  >
+                    <Eye className="w-4 h-4 mr-1" />
+                    Consulter
+                  </Button>
+                  <Button variant="outline" size="sm">
+                    <Download className="w-4 h-4 mr-1" />
+                    Télécharger
+                  </Button>
+                  <Button variant="outline" size="sm">
+                    <Share2 className="w-4 h-4 mr-1" />
+                    Partager
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+
+        {/* Pagination */}
+        {filteredProcedures.length > 0 && (
+          <div className="mt-6">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              totalItems={totalItems}
+              itemsPerPage={itemsPerPage}
+              onPageChange={setCurrentPage}
+              onItemsPerPageChange={setItemsPerPage}
+            />
+          </div>
+        )}
       </div>
 
       {/* Onglets horizontaux pour les éléments */}

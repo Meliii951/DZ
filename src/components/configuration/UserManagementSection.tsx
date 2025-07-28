@@ -4,7 +4,9 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { useState } from "react";
+import { Pagination } from "@/components/common/Pagination";
+import { usePagination } from "@/hooks/usePagination";
+import { useState, useMemo } from "react";
 import { 
   Users, 
   UserPlus, 
@@ -37,7 +39,7 @@ export function UserManagementSection({ language = "fr" }: UserManagementSection
   const [roleModalOpen, setRoleModalOpen] = useState(false);
   const [permissionModalOpen, setPermissionModalOpen] = useState(false);
 
-  const users = [
+  const allUsers = [
     { name: "Ahmed Benali", email: "ahmed.benali@justice.dz", role: "Administrateur", status: "Actif", lastLogin: "2025-01-02 14:30", department: "Justice" },
     { name: "Fatima Khelifi", email: "fatima.khelifi@interieur.dz", role: "Gestionnaire", status: "Actif", lastLogin: "2025-01-02 10:15", department: "Intérieur" },
     { name: "Mohamed Meziane", email: "mohamed.meziane@finances.dz", role: "Juriste", status: "Actif", lastLogin: "2025-01-01 16:45", department: "Finances" },
@@ -46,12 +48,30 @@ export function UserManagementSection({ language = "fr" }: UserManagementSection
     { name: "Samira Belarbi", email: "samira.belarbi@sante.dz", role: "Lecteur", status: "Actif", lastLogin: "2025-01-01 13:20", department: "Santé" },
     { name: "Omar Khadra", email: "omar.khadra@education.dz", role: "Gestionnaire", status: "Suspendu", lastLogin: "2024-12-28 11:30", department: "Éducation" },
     { name: "Nadia Saidi", email: "nadia.saidi@pm.dz", role: "Administrateur", status: "Actif", lastLogin: "2025-01-02 15:10", department: "Premier Ministère" }
-  ].filter(user => 
-    user.name.toLowerCase().includes(usersFilter.toLowerCase()) ||
-    user.email.toLowerCase().includes(usersFilter.toLowerCase()) ||
-    user.role.toLowerCase().includes(usersFilter.toLowerCase()) ||
-    user.department.toLowerCase().includes(usersFilter.toLowerCase())
+  ];
+
+  const filteredUsers = useMemo(() => 
+    allUsers.filter(user => 
+      user.name.toLowerCase().includes(usersFilter.toLowerCase()) ||
+      user.email.toLowerCase().includes(usersFilter.toLowerCase()) ||
+      user.role.toLowerCase().includes(usersFilter.toLowerCase()) ||
+      user.department.toLowerCase().includes(usersFilter.toLowerCase())
+    ), [allUsers, usersFilter]
   );
+
+  // Pagination pour les utilisateurs
+  const {
+    currentData: paginatedUsers,
+    currentPage: usersCurrentPage,
+    totalPages: usersTotalPages,
+    itemsPerPage: usersItemsPerPage,
+    totalItems: usersTotalItems,
+    setCurrentPage: setUsersCurrentPage,
+    setItemsPerPage: setUsersItemsPerPage
+  } = usePagination({
+    data: filteredUsers,
+    itemsPerPage: 10
+  });
 
   const roles = [
     { name: "Administrateur", users: 15, permissions: 45, description: "Accès complet au système", status: "Actif" },
@@ -134,47 +154,63 @@ export function UserManagementSection({ language = "fr" }: UserManagementSection
             </Button>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {users.map((user, index) => (
-              <Card key={index}>
-                <CardContent className="pt-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <Avatar>
-                        <AvatarFallback>{user.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <h4 className="font-semibold text-gray-900">{user.name}</h4>
-                        <p className="text-sm text-gray-600">{user.email}</p>
-                        <div className="flex items-center gap-2 mt-1">
-                          <Badge variant="outline">{user.role}</Badge>
-                          <Badge variant="outline">{user.department}</Badge>
-                          <Badge className={
-                            user.status === 'Actif' ? 'bg-green-100 text-green-800' :
-                            user.status === 'Inactif' ? 'bg-gray-100 text-gray-800' :
-                            'bg-red-100 text-red-800'
-                          }>
-                            {user.status}
-                          </Badge>
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              {paginatedUsers.map((user, index) => (
+                <Card key={index}>
+                  <CardContent className="pt-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-4">
+                        <Avatar>
+                          <AvatarFallback>{user.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <h4 className="font-semibold text-gray-900">{user.name}</h4>
+                          <p className="text-sm text-gray-600">{user.email}</p>
+                          <div className="flex items-center gap-2 mt-1">
+                            <Badge variant="outline">{user.role}</Badge>
+                            <Badge variant="outline">{user.department}</Badge>
+                            <Badge className={
+                              user.status === 'Actif' ? 'bg-green-100 text-green-800' :
+                              user.status === 'Inactif' ? 'bg-gray-100 text-gray-800' :
+                              'bg-red-100 text-red-800'
+                            }>
+                              {user.status}
+                            </Badge>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-xs text-gray-500">Dernière connexion</p>
+                        <p className="text-sm font-medium">{user.lastLogin}</p>
+                        <div className="flex gap-2 mt-2">
+                          <Button variant="outline" size="sm">
+                            <Edit className="w-4 h-4" />
+                          </Button>
+                          <Button variant="outline" size="sm">
+                            <Settings className="w-4 h-4" />
+                          </Button>
                         </div>
                       </div>
                     </div>
-                    <div className="text-right">
-                      <p className="text-xs text-gray-500">Dernière connexion</p>
-                      <p className="text-sm font-medium">{user.lastLogin}</p>
-                      <div className="flex gap-2 mt-2">
-                        <Button variant="outline" size="sm">
-                          <Edit className="w-4 h-4" />
-                        </Button>
-                        <Button variant="outline" size="sm">
-                          <Settings className="w-4 h-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            {/* Pagination pour les utilisateurs */}
+            {filteredUsers.length > 0 && (
+              <div className="mt-6">
+                <Pagination
+                  currentPage={usersCurrentPage}
+                  totalPages={usersTotalPages}
+                  totalItems={usersTotalItems}
+                  itemsPerPage={usersItemsPerPage}
+                  onPageChange={setUsersCurrentPage}
+                  onItemsPerPageChange={setUsersItemsPerPage}
+                />
+              </div>
+            )}
           </div>
         </TabsContent>
 

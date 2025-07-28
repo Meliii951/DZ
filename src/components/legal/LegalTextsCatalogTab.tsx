@@ -12,6 +12,8 @@ import { LegalTextCard } from './LegalTextCard';
 import { LegalTextsEmptyState } from './LegalTextsEmptyState';
 import { useLegalTextsData } from './hooks/useLegalTextsData';
 import { TabSearchField } from '@/components/common/TabSearchField';
+import { Pagination } from '@/components/common/Pagination';
+import { usePagination } from '@/hooks/usePagination';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { FilterOptions, SortOption, FilterService, LegalText } from '@/services/filterService';
 
@@ -87,6 +89,20 @@ export function LegalTextsCatalogTab({ onAddLegalText, onOpenApprovalQueue }: Le
     console.log('Tab search:', query);
   };
 
+  // Pagination
+  const {
+    currentData: paginatedTexts,
+    currentPage,
+    totalPages,
+    itemsPerPage,
+    totalItems,
+    setCurrentPage,
+    setItemsPerPage
+  } = usePagination({
+    data: processedTexts,
+    itemsPerPage: 10
+  });
+
   return (
     <div className="space-y-6">
       {/* Nouveau champ de recherche avec reconnaissance vocale */}
@@ -124,16 +140,32 @@ export function LegalTextsCatalogTab({ onAddLegalText, onOpenApprovalQueue }: Le
       {/* Filtre avec onglets */}
       <LegalTextsFilter onFilterChange={handleFilterChange} />
 
-      {/* Liste des textes juridiques filtrés */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {processedTexts.length === 0 ? (
-          <div className="col-span-full">
-            <LegalTextsEmptyState />
+      {/* Liste des textes juridiques filtrés avec pagination */}
+      <div className="space-y-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          {paginatedTexts.length === 0 ? (
+            <div className="col-span-full">
+              <LegalTextsEmptyState />
+            </div>
+          ) : (
+            paginatedTexts.map((text) => (
+              <LegalTextCard key={text.id} text={text as any} />
+            ))
+          )}
+        </div>
+
+        {/* Pagination */}
+        {processedTexts.length > 0 && (
+          <div className="mt-6">
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              totalItems={totalItems}
+              itemsPerPage={itemsPerPage}
+              onPageChange={setCurrentPage}
+              onItemsPerPageChange={setItemsPerPage}
+            />
           </div>
-        ) : (
-          processedTexts.map((text) => (
-            <LegalTextCard key={text.id} text={text as any} />
-          ))
         )}
       </div>
 
