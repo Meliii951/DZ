@@ -14,6 +14,8 @@ import { SearchCard } from "./common/SearchCard";
 import { SavedItemsList } from "./common/SavedItemsList";
 import { PopularItemsList } from "./common/PopularItemsList";
 import { ProcedureSearchHistoryTab } from "./procedures/ProcedureSearchHistoryTab";
+import { Pagination } from "@/components/common/Pagination";
+import { usePagination } from "@/hooks/usePagination";
 
 export function ProcedureSearchSection() {
   const searchCards = [
@@ -79,8 +81,94 @@ export function ProcedureSearchSection() {
       category: "État civil", 
       lastAccessed: "Il y a 3 jours",
       wilaya: "Tizi Ouzou"
+    },
+    {
+      id: 5,
+      title: "Carte d'identité nationale - Commune d'Alger",
+      date: "4 jan 2025",
+      results: 56,
+      category: "Identité",
+      lastAccessed: "Il y a 1 jour",
+      wilaya: "Alger"
+    },
+    {
+      id: 6,
+      title: "Certificat de résidence - Wilaya d'Oran",
+      date: "2 jan 2025",
+      results: 23,
+      category: "Administratif",
+      lastAccessed: "Il y a 4 jours",
+      wilaya: "Oran"
+    },
+    {
+      id: 7,
+      title: "Attestation de travail - Ministère du Travail",
+      date: "30 déc 2024",
+      results: 78,
+      category: "Social",
+      lastAccessed: "Il y a 6 jours",
+      wilaya: "Alger"
+    },
+    {
+      id: 8,
+      title: "Licence commerciale - Wilaya de Constantine",
+      date: "28 déc 2024",
+      results: 45,
+      category: "Commercial",
+      lastAccessed: "Il y a 2 semaines",
+      wilaya: "Constantine"
+    },
+    {
+      id: 9,
+      title: "Certificat médical - Hôpital d'Alger",
+      date: "26 déc 2024",
+      results: 67,
+      category: "Santé",
+      lastAccessed: "Il y a 1 semaine",
+      wilaya: "Alger"
+    },
+    {
+      id: 10,
+      title: "Attestation de scolarité - Université d'Oran",
+      date: "24 déc 2024",
+      results: 34,
+      category: "Éducation",
+      lastAccessed: "Il y a 3 jours",
+      wilaya: "Oran"
+    },
+    {
+      id: 11,
+      title: "Certificat de propriété - Conservateur d'Alger",
+      date: "22 déc 2024",
+      results: 89,
+      category: "Propriété",
+      lastAccessed: "Il y a 5 jours",
+      wilaya: "Alger"
+    },
+    {
+      id: 12,
+      title: "Attestation de domicile - Commune de Constantine",
+      date: "20 déc 2024",
+      results: 23,
+      category: "Administratif",
+      lastAccessed: "Il y a 2 semaines",
+      wilaya: "Constantine"
     }
   ];
+
+  // Pagination pour les recherches sauvegardées
+  const {
+    currentData: paginatedSavedSearches,
+    currentPage: savedSearchesCurrentPage,
+    totalPages: savedSearchesTotalPages,
+    itemsPerPage: savedSearchesItemsPerPage,
+    totalItems: savedSearchesTotalItems,
+    setCurrentPage: setSavedSearchesCurrentPage,
+    setItemsPerPage: setSavedSearchesItemsPerPage
+  } = usePagination({
+    data: savedProcedureSearches,
+    itemsPerPage: 10
+  });
 
   const popularItems = [
     {
@@ -98,6 +186,102 @@ export function ProcedureSearchSection() {
       wilaya: "Alger", 
       trend: "+18%",
       description: "Procédure simplifiée CNRC"
+    },
+    {
+      query: "Permis de conduire",
+      count: "10,890 recherches",
+      category: "Transport",
+      wilaya: "National",
+      trend: "+15%",
+      description: "Permis de conduire catégorie B"
+    },
+    {
+      query: "Acte de naissance",
+      count: "9,456 recherches",
+      category: "État civil",
+      wilaya: "National",
+      trend: "+8%",
+      description: "Certificat de naissance"
+    },
+    {
+      query: "Carte d'identité",
+      count: "8,234 recherches",
+      category: "Identité",
+      wilaya: "National",
+      trend: "+11%",
+      description: "Carte d'identité nationale"
+    },
+    {
+      query: "Certificat de résidence",
+      count: "7,123 recherches",
+      category: "Administratif",
+      wilaya: "National",
+      trend: "+9%",
+      description: "Attestation de domicile"
+    },
+    {
+      query: "Attestation de travail",
+      count: "6,789 recherches",
+      category: "Social",
+      wilaya: "National",
+      trend: "+14%",
+      description: "Certificat d'emploi"
+    },
+    {
+      query: "Licence commerciale",
+      count: "5,456 recherches",
+      category: "Commercial",
+      wilaya: "National",
+      trend: "+16%",
+      description: "Autorisation commerciale"
+    },
+    {
+      query: "Certificat médical",
+      count: "4,567 recherches",
+      category: "Santé",
+      wilaya: "National",
+      trend: "+7%",
+      description: "Attestation médicale"
+    },
+    {
+      query: "Attestation de scolarité",
+      count: "3,890 recherches",
+      category: "Éducation",
+      wilaya: "National",
+      trend: "+12%",
+      description: "Certificat d'études"
+    },
+    {
+      query: "Certificat de propriété",
+      count: "3,234 recherches",
+      category: "Propriété",
+      wilaya: "National",
+      trend: "+5%",
+      description: "Titre de propriété"
+    },
+    {
+      query: "Attestation de domicile",
+      count: "2,789 recherches",
+      category: "Administratif",
+      wilaya: "National",
+      trend: "+10%",
+      description: "Certificat de résidence"
+    }
+  ];
+
+  // Pagination pour les éléments populaires
+  const {
+    currentData: paginatedPopularItems,
+    currentPage: popularItemsCurrentPage,
+    totalPages: popularItemsTotalPages,
+    itemsPerPage: popularItemsItemsPerPage,
+    totalItems: popularItemsTotalItems,
+    setCurrentPage: setPopularItemsCurrentPage,
+    setItemsPerPage: setPopularItemsItemsPerPage
+  } = usePagination({
+    data: popularItems,
+    itemsPerPage: 10
+  });
     },
     {
       query: "Permis de conduire",
@@ -183,16 +367,32 @@ export function ProcedureSearchSection() {
               title="Recherches sauvegardées"
               description="Vos dernières recherches de procédures administratives algériennes"
               icon={Bookmark}
-              items={savedProcedureSearches}
+              items={paginatedSavedSearches}
               onViewAll={() => {}}
+              pagination={{
+                currentPage: savedSearchesCurrentPage,
+                totalPages: savedSearchesTotalPages,
+                totalItems: savedSearchesTotalItems,
+                itemsPerPage: savedSearchesItemsPerPage,
+                onPageChange: setSavedSearchesCurrentPage,
+                onItemsPerPageChange: setSavedSearchesItemsPerPage
+              }}
             />
 
             <PopularItemsList
               title="Recherches populaires en Algérie"
               description="Les procédures les plus recherchées par les citoyens algériens"
               icon={TrendingUp}
-              items={popularItems}
+              items={paginatedPopularItems}
               statistics={statistics}
+              pagination={{
+                currentPage: popularItemsCurrentPage,
+                totalPages: popularItemsTotalPages,
+                totalItems: popularItemsTotalItems,
+                itemsPerPage: popularItemsItemsPerPage,
+                onPageChange: setPopularItemsCurrentPage,
+                onItemsPerPageChange: setPopularItemsItemsPerPage
+              }}
             />
           </div>
         </TabsContent>

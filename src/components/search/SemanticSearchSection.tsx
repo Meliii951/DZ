@@ -1,10 +1,12 @@
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { EnhancedInput } from '@/components/common/EnhancedInput';
+import { Pagination } from '@/components/common/Pagination';
+import { usePagination } from '@/hooks/usePagination';
 import { Brain, Network, Quote, Search, Link, Eye, Download } from 'lucide-react';
 import { SemanticSearchModal } from '@/components/modals/SemanticSearchModal';
 
@@ -45,8 +47,112 @@ export function SemanticSearchSection() {
       connections: ["Covid-19", "Article 1218 Code civil", "Ordonnance 2020-306"],
       type: "jurisprudence",
       excerpt: "La pandémie de Covid-19 peut constituer un cas de force majeure sous certaines conditions..."
+    },
+    {
+      id: "3",
+      title: "Droit commercial - Société",
+      concept: "Responsabilité limitée",
+      relevance: 0.92,
+      connections: ["Code de commerce", "Article L223-1", "Jurisprudence 2023"],
+      type: "text",
+      excerpt: "La responsabilité des associés est limitée au montant de leurs apports..."
+    },
+    {
+      id: "4",
+      title: "Droit administratif - Marchés publics",
+      concept: "Principe d'égalité",
+      relevance: 0.87,
+      connections: ["Code des marchés publics", "Article 3", "Jurisprudence CE"],
+      type: "jurisprudence",
+      excerpt: "L'égalité d'accès à la commande publique est un principe fondamental..."
+    },
+    {
+      id: "5",
+      title: "Droit pénal - Infractions",
+      concept: "Élément intentionnel",
+      relevance: 0.94,
+      connections: ["Code pénal", "Article 121-3", "Doctrine classique"],
+      type: "text",
+      excerpt: "L'élément intentionnel est constitutif de l'infraction pénale..."
+    },
+    {
+      id: "6",
+      title: "Droit social - Contrat de travail",
+      concept: "Subordination juridique",
+      relevance: 0.89,
+      connections: ["Code du travail", "Article L1111-1", "Jurisprudence sociale"],
+      type: "jurisprudence",
+      excerpt: "Le lien de subordination caractérise le contrat de travail..."
+    },
+    {
+      id: "7",
+      title: "Droit fiscal - Impôts directs",
+      concept: "Principe de légalité",
+      relevance: 0.91,
+      connections: ["Code général des impôts", "Article 1", "Constitution"],
+      type: "text",
+      excerpt: "L'impôt ne peut être établi que par la loi..."
+    },
+    {
+      id: "8",
+      title: "Droit constitutionnel - Contrôle",
+      concept: "Constitutionnalité",
+      relevance: 0.86,
+      connections: ["Constitution", "Article 61", "Conseil constitutionnel"],
+      type: "jurisprudence",
+      excerpt: "Le contrôle de constitutionnalité s'exerce a priori..."
+    },
+    {
+      id: "9",
+      title: "Droit international - Traités",
+      concept: "Primauté du droit international",
+      relevance: 0.93,
+      connections: ["Convention de Vienne", "Article 27", "Jurisprudence internationale"],
+      type: "text",
+      excerpt: "Les traités internationaux ont une autorité supérieure aux lois..."
+    },
+    {
+      id: "10",
+      title: "Droit européen - Directives",
+      concept: "Transposition",
+      relevance: 0.88,
+      connections: ["Traité UE", "Article 288", "Jurisprudence CJUE"],
+      type: "jurisprudence",
+      excerpt: "Les directives doivent être transposées en droit national..."
+    },
+    {
+      id: "11",
+      title: "Droit de la propriété intellectuelle",
+      concept: "Droit d'auteur",
+      relevance: 0.90,
+      connections: ["Code de la propriété intellectuelle", "Article L111-1", "Jurisprudence spécialisée"],
+      type: "text",
+      excerpt: "L'auteur d'une œuvre de l'esprit jouit sur cette œuvre d'un droit de propriété exclusif..."
+    },
+    {
+      id: "12",
+      title: "Droit de l'environnement - Pollueur-payeur",
+      concept: "Responsabilité environnementale",
+      relevance: 0.85,
+      connections: ["Code de l'environnement", "Article L110-1", "Principes internationaux"],
+      type: "jurisprudence",
+      excerpt: "Le principe pollueur-payeur vise à internaliser les coûts environnementaux..."
     }
   ];
+
+  // Pagination pour les résultats de recherche
+  const {
+    currentData: paginatedResults,
+    currentPage,
+    totalPages,
+    itemsPerPage,
+    totalItems,
+    setCurrentPage,
+    setItemsPerPage
+  } = usePagination({
+    data: results,
+    itemsPerPage: 10
+  });
 
   const handleSearch = async (type: string) => {
     if (!searchQuery.trim()) return;
@@ -97,10 +203,10 @@ export function SemanticSearchSection() {
                 </Button>
               </div>
 
-              {results.length > 0 && (
+              {paginatedResults.length > 0 && (
                 <div className="space-y-4">
-                  <h3 className="text-lg font-semibold">Résultats conceptuels ({results.length})</h3>
-                  {results.map((result) => (
+                  <h3 className="text-lg font-semibold">Résultats conceptuels ({totalItems})</h3>
+                  {paginatedResults.map((result) => (
                     <Card key={result.id} className="hover:shadow-md transition-shadow">
                       <CardContent className="pt-4">
                         <div className="flex items-start justify-between">
@@ -166,6 +272,16 @@ export function SemanticSearchSection() {
                       </CardContent>
                     </Card>
                   ))}
+                  
+                  {/* Pagination */}
+                  <Pagination
+                    currentPage={currentPage}
+                    totalPages={totalPages}
+                    totalItems={totalItems}
+                    itemsPerPage={itemsPerPage}
+                    onPageChange={setCurrentPage}
+                    onItemsPerPageChange={setItemsPerPage}
+                  />
                 </div>
               )}
             </CardContent>
