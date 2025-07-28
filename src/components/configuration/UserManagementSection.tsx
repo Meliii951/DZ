@@ -73,48 +73,6 @@ export function UserManagementSection({ language = "fr" }: UserManagementSection
     itemsPerPage: 10
   });
 
-  // Pagination pour les rôles
-  const {
-    currentData: paginatedRoles,
-    currentPage: rolesCurrentPage,
-    totalPages: rolesTotalPages,
-    itemsPerPage: rolesItemsPerPage,
-    totalItems: rolesTotalItems,
-    setCurrentPage: setRolesCurrentPage,
-    setItemsPerPage: setRolesItemsPerPage
-  } = usePagination({
-    data: roles,
-    itemsPerPage: 10
-  });
-
-  // Pagination pour les permissions
-  const {
-    currentData: paginatedPermissions,
-    currentPage: permissionsCurrentPage,
-    totalPages: permissionsTotalPages,
-    itemsPerPage: permissionsItemsPerPage,
-    totalItems: permissionsTotalItems,
-    setCurrentPage: setPermissionsCurrentPage,
-    setItemsPerPage: setPermissionsItemsPerPage
-  } = usePagination({
-    data: permissions,
-    itemsPerPage: 10
-  });
-
-  // Pagination pour les sessions
-  const {
-    currentData: paginatedSessions,
-    currentPage: sessionsCurrentPage,
-    totalPages: sessionsTotalPages,
-    itemsPerPage: sessionsItemsPerPage,
-    totalItems: sessionsTotalItems,
-    setCurrentPage: setSessionsCurrentPage,
-    setItemsPerPage: setSessionsItemsPerPage
-  } = usePagination({
-    data: activeSessions,
-    itemsPerPage: 10
-  });
-
   const roles = [
     { name: "Administrateur", users: 15, permissions: 45, description: "Accès complet au système", status: "Actif" },
     { name: "Gestionnaire", users: 89, permissions: 32, description: "Gestion des contenus et utilisateurs", status: "Actif" },
@@ -169,6 +127,48 @@ export function UserManagementSection({ language = "fr" }: UserManagementSection
     session.location.toLowerCase().includes(sessionsFilter.toLowerCase()) ||
     session.device.toLowerCase().includes(sessionsFilter.toLowerCase())
   );
+
+  // Pagination pour les rôles
+  const {
+    currentData: paginatedRoles,
+    currentPage: rolesCurrentPage,
+    totalPages: rolesTotalPages,
+    itemsPerPage: rolesItemsPerPage,
+    totalItems: rolesTotalItems,
+    setCurrentPage: setRolesCurrentPage,
+    setItemsPerPage: setRolesItemsPerPage
+  } = usePagination({
+    data: roles,
+    itemsPerPage: 10
+  });
+
+  // Pagination pour les permissions
+  const {
+    currentData: paginatedPermissions,
+    currentPage: permissionsCurrentPage,
+    totalPages: permissionsTotalPages,
+    itemsPerPage: permissionsItemsPerPage,
+    totalItems: permissionsTotalItems,
+    setCurrentPage: setPermissionsCurrentPage,
+    setItemsPerPage: setPermissionsItemsPerPage
+  } = usePagination({
+    data: permissions,
+    itemsPerPage: 10
+  });
+
+  // Pagination pour les sessions
+  const {
+    currentData: paginatedSessions,
+    currentPage: sessionsCurrentPage,
+    totalPages: sessionsTotalPages,
+    itemsPerPage: sessionsItemsPerPage,
+    totalItems: sessionsTotalItems,
+    setCurrentPage: setSessionsCurrentPage,
+    setItemsPerPage: setSessionsItemsPerPage
+  } = usePagination({
+    data: activeSessions,
+    itemsPerPage: 10
+  });
 
   // Handler functions
   const handleSaveUser = (userData: Record<string, unknown>) => {

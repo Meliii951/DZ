@@ -428,6 +428,16 @@ export function SecuritySection({ language = "fr" }: SecuritySectionProps) {
               </Card>
             ))}
           </div>
+          
+          {/* Pagination pour les logs d'audit */}
+          <Pagination
+            currentPage={auditLogsCurrentPage}
+            totalPages={auditLogsTotalPages}
+            totalItems={auditLogsTotalItems}
+            itemsPerPage={auditLogsItemsPerPage}
+            onPageChange={setAuditLogsCurrentPage}
+            onItemsPerPageChange={setAuditLogsItemsPerPage}
+          />
         </TabsContent>
         
         <TabsContent value="governance">
