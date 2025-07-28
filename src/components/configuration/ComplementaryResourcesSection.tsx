@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Pagination } from "@/components/common/Pagination";
+import { usePagination } from "@/hooks/usePagination";
 import { useState } from "react";
 import { 
   BookOpen, 
@@ -50,7 +52,13 @@ export function ComplementaryResourcesSection({ language = "fr" }: Complementary
     { name: "UN Treaty Collection", url: "treaties.un.org", description: "Traités internationaux", status: "Actif", type: "Externe" },
     { name: "World Bank Law", url: "projects.worldbank.org", description: "Droit du développement", status: "Actif", type: "Externe" },
     { name: "OHCHR", url: "www.ohchr.org", description: "Droits de l'homme", status: "Actif", type: "Externe" },
-    { name: "ICC-CPI", url: "www.icc-cpi.int", description: "Cour pénale internationale", status: "Actif", type: "Externe" }
+    { name: "ICC-CPI", url: "www.icc-cpi.int", description: "Cour pénale internationale", status: "Actif", type: "Externe" },
+    { name: "HUDOC", url: "hudoc.echr.coe.int", description: "Jurisprudence CEDH", status: "Actif", type: "Externe" },
+    { name: "ICJ", url: "www.icj-cij.org", description: "Cour internationale de justice", status: "Actif", type: "Externe" },
+    { name: "WTO Legal Texts", url: "www.wto.org", description: "Droit commercial international", status: "Actif", type: "Externe" },
+    { name: "FAOLEX", url: "www.fao.org/faolex", description: "Droit alimentaire", status: "Actif", type: "Externe" },
+    { name: "ILO", url: "www.ilo.org", description: "Droit du travail", status: "Actif", type: "Externe" },
+    { name: "UNESCO", url: "portal.unesco.org", description: "Droit culturel", status: "Actif", type: "Externe" }
   ]);
 
   const [databases, setDatabases] = useState([
