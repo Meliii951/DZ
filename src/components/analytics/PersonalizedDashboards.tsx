@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Pagination } from '@/components/common/Pagination';
+import { usePagination } from '@/hooks/usePagination';
 import { NewDashboardModal } from '@/components/modals/NewDashboardModal';
 import { 
   Plus, 
@@ -56,6 +58,87 @@ export function PersonalizedDashboards() {
       isDefault: false,
       lastModified: "Il y a 3 jours",
       views: 67
+    },
+    {
+      id: 4,
+      name: "Analyse de Conformité",
+      description: "Suivi des obligations réglementaires",
+      widgets: ["Conformité RGPD", "Audits", "Risques", "Rapports"],
+      isDefault: false,
+      lastModified: "Il y a 5 jours",
+      views: 45
+    },
+    {
+      id: 5,
+      name: "Veille Juridique",
+      description: "Surveillance des évolutions juridiques",
+      widgets: ["Alertes", "Jurisprudence", "Réformes", "Actualités"],
+      isDefault: false,
+      lastModified: "Il y a 1 semaine",
+      views: 78
+    },
+    {
+      id: 6,
+      name: "Gestion des Procédures",
+      description: "Suivi des procédures administratives",
+      widgets: ["Procédures en cours", "Échéances", "Statuts", "Documents"],
+      isDefault: false,
+      lastModified: "Il y a 2 jours",
+      views: 92
+    },
+    {
+      id: 7,
+      name: "Analyse des Tendances",
+      description: "Évolution des pratiques juridiques",
+      widgets: ["Tendances", "Graphiques", "Comparaisons", "Prédictions"],
+      isDefault: false,
+      lastModified: "Il y a 4 jours",
+      views: 34
+    },
+    {
+      id: 8,
+      name: "Collaboration Équipe",
+      description: "Activités collaboratives de l'équipe",
+      widgets: ["Projets", "Tâches", "Communication", "Partage"],
+      isDefault: false,
+      lastModified: "Il y a 3 jours",
+      views: 56
+    },
+    {
+      id: 9,
+      name: "Intelligence Concurrentielle",
+      description: "Analyse de la concurrence juridique",
+      widgets: ["Concurrence", "Marché", "Benchmarks", "Stratégies"],
+      isDefault: false,
+      lastModified: "Il y a 1 semaine",
+      views: 23
+    },
+    {
+      id: 10,
+      name: "Évaluation d'Impact",
+      description: "Impact des changements législatifs",
+      widgets: ["Impact", "Analyse", "Risques", "Opportunités"],
+      isDefault: false,
+      lastModified: "Il y a 2 semaines",
+      views: 41
+    },
+    {
+      id: 11,
+      name: "Gestion des Documents",
+      description: "Organisation et suivi des documents",
+      widgets: ["Documents", "Archives", "Versions", "Métadonnées"],
+      isDefault: false,
+      lastModified: "Il y a 1 jour",
+      views: 67
+    },
+    {
+      id: 12,
+      name: "Reporting Exécutif",
+      description: "Rapports pour la direction",
+      widgets: ["KPIs", "Métriques", "Rapports", "Présentations"],
+      isDefault: false,
+      lastModified: "Il y a 3 jours",
+      views: 29
     }
   ]);
 
@@ -68,6 +151,34 @@ export function PersonalizedDashboards() {
     { id: 'calendar', name: 'Calendrier', icon: Calendar, category: 'Planification' },
     { id: 'charts', name: 'Graphiques', icon: BarChart3, category: 'Visualisation' }
   ];
+
+  // Pagination pour les tableaux de bord personnalisés
+  const {
+    currentData: paginatedDashboards,
+    currentPage: dashboardsCurrentPage,
+    totalPages: dashboardsTotalPages,
+    itemsPerPage: dashboardsItemsPerPage,
+    totalItems: dashboardsTotalItems,
+    setCurrentPage: setDashboardsCurrentPage,
+    setItemsPerPage: setDashboardsItemsPerPage
+  } = usePagination({
+    data: dashboards,
+    itemsPerPage: 10
+  });
+
+  // Pagination pour les widgets disponibles
+  const {
+    currentData: paginatedWidgets,
+    currentPage: widgetsCurrentPage,
+    totalPages: widgetsTotalPages,
+    itemsPerPage: widgetsItemsPerPage,
+    totalItems: widgetsTotalItems,
+    setCurrentPage: setWidgetsCurrentPage,
+    setItemsPerPage: setWidgetsItemsPerPage
+  } = usePagination({
+    data: availableWidgets,
+    itemsPerPage: 10
+  });
 
   // Tableaux de bord disponibles transformés en format de cards
   const availableDashboards = [
