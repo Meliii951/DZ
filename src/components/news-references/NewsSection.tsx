@@ -17,6 +17,66 @@ export function NewsSection() {
   const actions = useGlobalActions();
   const { showApiModal, apiContext, openApiModal, closeApiModal } = useApiModalHandler();
 
+  // Données dynamiques pour les actualités
+  const newsData = [
+    { id: 1, title: "Réforme du Code Civil", date: "Il y a 2 jours", description: "Le gouvernement a annoncé une réforme majeure du Code Civil...", category: "Législation" },
+    { id: 2, title: "Nouvelle Loi sur la Protection des Données", date: "Il y a 1 semaine", description: "Une nouvelle loi renforce la protection des données personnelles...", category: "RGPD" },
+    { id: 3, title: "Impact du Brexit sur les Contrats Internationaux", date: "Il y a 2 semaines", description: "Le Brexit continue d'impacter les contrats internationaux...", category: "International" },
+    { id: 4, title: "Nouvelle Jurisprudence sur les Marques", date: "Il y a 3 jours", description: "La Cour de Cassation clarifie les critères de protection des marques...", category: "Propriété Intellectuelle" },
+    { id: 5, title: "Réforme de la Procédure Administrative", date: "Il y a 1 jour", description: "Simplification des procédures administratives pour les entreprises...", category: "Administratif" },
+    { id: 6, title: "Nouvelle Directive sur les Marchés Publics", date: "Il y a 4 jours", description: "Transparence renforcée dans les marchés publics...", category: "Marchés Publics" },
+    { id: 7, title: "Protection des Données Bancaires", date: "Il y a 5 jours", description: "Nouvelles mesures de sécurité pour les données bancaires...", category: "Bancaire" },
+    { id: 8, title: "Réforme du Droit du Travail", date: "Il y a 1 semaine", description: "Modernisation du code du travail algérien...", category: "Travail" },
+    { id: 9, title: "Nouvelle Loi sur l'Environnement", date: "Il y a 2 semaines", description: "Renforcement de la protection environnementale...", category: "Environnement" },
+    { id: 10, title: "Réforme de la Justice Pénale", date: "Il y a 3 jours", description: "Modernisation de la procédure pénale...", category: "Pénal" },
+    { id: 11, title: "Protection des Consommateurs", date: "Il y a 6 jours", description: "Nouvelles garanties pour les consommateurs...", category: "Consommation" },
+    { id: 12, title: "Droit Numérique et IA", date: "Il y a 1 semaine", description: "Cadre juridique pour l'intelligence artificielle...", category: "Numérique" }
+  ];
+
+  // Données dynamiques pour les événements
+  const eventsData = [
+    { id: 1, title: "Conférence sur le Droit du Numérique", date: "15 Mai 2024", location: "Alger", category: "Conférence" },
+    { id: 2, title: "Atelier sur la Médiation", date: "22 Juin 2024", location: "Oran", category: "Atelier" },
+    { id: 3, title: "Séminaire sur la Compliance", date: "5 Juillet 2024", location: "Constantine", category: "Séminaire" },
+    { id: 4, title: "Forum sur l'Arbitrage International", date: "12 Septembre 2024", location: "Alger", category: "Forum" },
+    { id: 5, title: "Formation sur le RGPD", date: "28 Octobre 2024", location: "Oran", category: "Formation" },
+    { id: 6, title: "Colloque sur le Droit des Affaires", date: "10 Novembre 2024", location: "Constantine", category: "Colloque" },
+    { id: 7, title: "Journée du Droit de l'Environnement", date: "15 Décembre 2024", location: "Annaba", category: "Journée" },
+    { id: 8, title: "Workshop sur la Cybersécurité", date: "20 Janvier 2025", location: "Sétif", category: "Workshop" },
+    { id: 9, title: "Conférence sur l'Innovation Juridique", date: "25 Février 2025", location: "Alger", category: "Conférence" },
+    { id: 10, title: "Séminaire sur le Droit Maritime", date: "10 Mars 2025", location: "Oran", category: "Séminaire" },
+    { id: 11, title: "Forum sur la Justice Restaurative", date: "15 Avril 2025", location: "Constantine", category: "Forum" },
+    { id: 12, title: "Colloque sur le Droit Constitutionnel", date: "20 Mai 2025", location: "Alger", category: "Colloque" }
+  ];
+
+  // Pagination pour les actualités
+  const {
+    currentData: paginatedNews,
+    currentPage: newsCurrentPage,
+    totalPages: newsTotalPages,
+    itemsPerPage: newsItemsPerPage,
+    totalItems: newsTotalItems,
+    setCurrentPage: setNewsCurrentPage,
+    setItemsPerPage: setNewsItemsPerPage
+  } = usePagination({
+    data: newsData,
+    itemsPerPage: 10
+  });
+
+  // Pagination pour les événements
+  const {
+    currentData: paginatedEvents,
+    currentPage: eventsCurrentPage,
+    totalPages: eventsTotalPages,
+    itemsPerPage: eventsItemsPerPage,
+    totalItems: eventsTotalItems,
+    setCurrentPage: setEventsCurrentPage,
+    setItemsPerPage: setEventsItemsPerPage
+  } = usePagination({
+    data: eventsData,
+    itemsPerPage: 10
+  });
+
   const handleAdd = () => {
     console.log('Opening add news form...');
     setShowAddForm(true);
@@ -97,28 +157,30 @@ export function NewsSection() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-3">
-                  <div className="p-3 border rounded hover:bg-gray-50">
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium text-sm">Réforme du Code Civil</span>
-                      <span className="text-xs text-gray-500">Il y a 2 jours</span>
+                  {paginatedNews.map((news) => (
+                    <div key={news.id} className="p-3 border rounded hover:bg-gray-50">
+                      <div className="flex justify-between items-center">
+                        <span className="font-medium text-sm">{news.title}</span>
+                        <span className="text-xs text-gray-500">{news.date}</span>
+                      </div>
+                      <p className="text-xs text-gray-600">{news.description}</p>
+                      <div className="flex justify-between items-center mt-2">
+                        <span className="text-xs text-blue-600">{news.category}</span>
+                      </div>
                     </div>
-                    <p className="text-xs text-gray-600">Le gouvernement a annoncé une réforme majeure du Code Civil...</p>
-                  </div>
-                  <div className="p-3 border rounded hover:bg-gray-50">
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium text-sm">Nouvelle Loi sur la Protection des Données</span>
-                      <span className="text-xs text-gray-500">Il y a 1 semaine</span>
-                    </div>
-                    <p className="text-xs text-gray-600">Une nouvelle loi renforce la protection des données personnelles...</p>
-                  </div>
-                  <div className="p-3 border rounded hover:bg-gray-50">
-                    <div className="flex justify-between items-center">
-                      <span className="font-medium text-sm">Impact du Brexit sur les Contrats Internationaux</span>
-                      <span className="text-xs text-gray-500">Il y a 2 semaines</span>
-                    </div>
-                    <p className="text-xs text-gray-600">Le Brexit continue d'impacter les contrats internationaux...</p>
-                  </div>
+                  ))}
                 </div>
+                
+                {/* Pagination pour les actualités */}
+                <Pagination
+                  currentPage={newsCurrentPage}
+                  totalPages={newsTotalPages}
+                  totalItems={newsTotalItems}
+                  itemsPerPage={newsItemsPerPage}
+                  onPageChange={setNewsCurrentPage}
+                  onItemsPerPageChange={setNewsItemsPerPage}
+                />
+                
                 <Button className="w-full">
                   Voir toutes les actualités
                 </Button>
@@ -134,35 +196,26 @@ export function NewsSection() {
                 <p className="text-sm text-gray-600">Ne manquez aucun événement important du secteur juridique</p>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-3">
-                    <div className="p-3 bg-gray-50 rounded">
-                      <div className="font-medium text-sm">Conférence sur le Droit du Numérique</div>
-                      <p className="text-xs text-gray-600">15 Mai 2024 - Alger</p>
-                    </div>
-                    <div className="p-3 bg-gray-50 rounded">
-                      <div className="font-medium text-sm">Atelier sur la Médiation</div>
-                      <p className="text-xs text-gray-600">22 Juin 2024 - Oran</p>
-                    </div>
-                    <div className="p-3 bg-gray-50 rounded">
-                      <div className="font-medium text-sm">Séminaire sur la Compliance</div>
-                      <p className="text-xs text-gray-600">5 Juillet 2024 - Constantine</p>
-                    </div>
+                <div className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {paginatedEvents.map((event) => (
+                      <div key={event.id} className="p-3 bg-gray-50 rounded">
+                        <div className="font-medium text-sm">{event.title}</div>
+                        <p className="text-xs text-gray-600">{event.date} - {event.location}</p>
+                        <span className="text-xs text-purple-600">{event.category}</span>
+                      </div>
+                    ))}
                   </div>
-                  <div className="space-y-3">
-                    <div className="p-3 bg-gray-50 rounded">
-                      <div className="font-medium text-sm">Forum sur l'Arbitrage International</div>
-                      <p className="text-xs text-gray-600">12 Septembre 2024 - Alger</p>
-                    </div>
-                    <div className="p-3 bg-gray-50 rounded">
-                      <div className="font-medium text-sm">Formation sur le RGPD</div>
-                      <p className="text-xs text-gray-600">28 Octobre 2024 - Oran</p>
-                    </div>
-                    <div className="p-3 bg-gray-50 rounded">
-                      <div className="font-medium text-sm">Colloque sur le Droit des Affaires</div>
-                      <p className="text-xs text-gray-600">10 Novembre 2024 - Constantine</p>
-                    </div>
-                  </div>
+                  
+                  {/* Pagination pour les événements */}
+                  <Pagination
+                    currentPage={eventsCurrentPage}
+                    totalPages={eventsTotalPages}
+                    totalItems={eventsTotalItems}
+                    itemsPerPage={eventsItemsPerPage}
+                    onPageChange={setEventsCurrentPage}
+                    onItemsPerPageChange={setEventsItemsPerPage}
+                  />
                 </div>
               </CardContent>
             </Card>
