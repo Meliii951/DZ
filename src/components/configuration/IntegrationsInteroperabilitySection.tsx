@@ -178,28 +178,35 @@ export function IntegrationsInteroperabilitySection({ language = "fr" }: Integra
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {apiEndpoints.map((api, index) => (
-                  <div key={index} className="flex flex-col p-4 bg-gray-50 rounded-lg">
-                    <div className="flex items-center gap-4 mb-3">
-                      <Badge variant="outline" className="font-mono">
-                        {api.method}
-                      </Badge>
-                      <Badge className={getStatusColor(api.status)}>
-                        {api.status === 'active' ? 'Actif' : 'Maintenance'}
-                      </Badge>
-                    </div>
-                    <code className="text-sm bg-white px-2 py-1 rounded mb-3 break-all">
-                      {api.endpoint}
-                    </code>
-                    <div className="flex flex-col gap-2 text-sm">
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Appels: </span>
-                        <span className="font-medium">{api.calls}</span>
+                  <div key={index} className="flex flex-col p-6 bg-gray-50 rounded-lg border border-gray-200 hover:border-gray-300 transition-colors">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-3">
+                        <Badge variant="outline" className="font-mono text-xs">
+                          {api.method}
+                        </Badge>
+                        <Badge className={`text-xs ${getStatusColor(api.status)}`}>
+                          {api.status === 'active' ? 'Actif' : 'Maintenance'}
+                        </Badge>
                       </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Temps moyen: </span>
-                        <span className="font-medium">{api.avgTime}</span>
+                      <div className="text-xs text-gray-500">
+                        #{index + 1}
+                      </div>
+                    </div>
+                    <div className="mb-4">
+                      <code className="text-sm bg-white px-3 py-2 rounded border break-all font-mono block">
+                        {api.endpoint}
+                      </code>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4 text-sm">
+                      <div className="flex flex-col">
+                        <span className="text-gray-600 text-xs font-medium">Appels</span>
+                        <span className="font-semibold text-lg">{api.calls}</span>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="text-gray-600 text-xs font-medium">Temps moyen</span>
+                        <span className="font-semibold text-lg">{api.avgTime}</span>
                       </div>
                     </div>
                   </div>

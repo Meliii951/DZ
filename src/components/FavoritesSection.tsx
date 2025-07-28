@@ -140,31 +140,36 @@ export function FavoritesSection() {
                     </div>
                   </div>
                   
-                  <div className="flex flex-wrap items-center gap-2">
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="gap-2 flex-shrink-0"
-                      onClick={buttonHandlers.viewDocument(item.id, item.title, item.type)}
-                    >
-                      <Eye className="w-4 h-4" />
-                      Consulter
-                    </Button>
-                    <Button 
-                      variant="outline" 
-                      size="sm" 
-                      className="gap-2 flex-shrink-0"
-                      onClick={buttonHandlers.downloadDocument(item.id, item.title)}
-                    >
-                      <Download className="w-4 h-4" />
-                      Télécharger
-                    </Button>
-                    <div className="flex gap-1 ml-auto">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-3">
+                    <div className="flex flex-wrap gap-2">
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="gap-2 flex-shrink-0"
+                        onClick={buttonHandlers.viewDocument(item.id, item.title, item.type)}
+                        title="Consulter le document"
+                      >
+                        <Eye className="w-4 h-4" />
+                        Consulter
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="gap-2 flex-shrink-0"
+                        onClick={buttonHandlers.downloadDocument(item.id, item.title)}
+                        title="Télécharger le document"
+                      >
+                        <Download className="w-4 h-4" />
+                        Télécharger
+                      </Button>
+                    </div>
+                    <div className="flex gap-1 sm:ml-auto">
                       <Button 
                         variant="ghost" 
                         size="sm"
                         className="p-2 h-8 w-8"
                         onClick={buttonHandlers.shareDocument(item.id, item.title)}
+                        title="Partager le document"
                       >
                         <Share className="w-4 h-4" />
                       </Button>
@@ -173,6 +178,7 @@ export function FavoritesSection() {
                         size="sm" 
                         className="text-red-600 hover:text-red-700 p-2 h-8 w-8"
                         onClick={buttonHandlers.removeFromFavorites(item.title)}
+                        title="Retirer des favoris"
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>

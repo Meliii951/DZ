@@ -180,41 +180,42 @@ export function CustomFormLibrary() {
           {filteredTemplates.map((template) => (
               <Card key={template.id} className="hover:shadow-md transition-shadow">
                 <CardContent className="pt-6">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
+                  <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4">
+                    <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2 mb-2">
-                        <h3 className="text-lg font-semibold">{template.title}</h3>
-                        {template.isStarred && <Star className="w-4 h-4 text-yellow-500 fill-current" />}
+                        <h3 className="text-lg font-semibold truncate">{template.title}</h3>
+                        {template.isStarred && <Star className="w-4 h-4 text-yellow-500 fill-current flex-shrink-0" />}
                       </div>
-                      <p className="text-gray-600 mb-3">{template.description}</p>
-                      <div className="flex items-center gap-4 text-sm text-gray-500">
-                        <div className="flex items-center gap-1">
+                      <p className="text-gray-600 mb-3 line-clamp-2">{template.description}</p>
+                      <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500">
+                        <div className="flex items-center gap-1 flex-shrink-0">
                           <FileText className="w-4 h-4" />
-                          {template.category}
+                          <span className="truncate">{template.category}</span>
                         </div>
-                        <div className="flex items-center gap-1">
+                        <div className="flex items-center gap-1 flex-shrink-0">
                           <User className="w-4 h-4" />
-                          {template.author}
+                          <span className="truncate">{template.author}</span>
                         </div>
-                        <div className="flex items-center gap-1">
+                        <div className="flex items-center gap-1 flex-shrink-0">
                           <Calendar className="w-4 h-4" />
-                          {template.createdDate}
+                          <span className="truncate">{template.createdDate}</span>
                         </div>
-                        <div className="flex items-center gap-1">
+                        <div className="flex items-center gap-1 flex-shrink-0">
                           <Download className="w-4 h-4" />
-                          {template.downloads} téléchargements
+                          <span className="truncate">{template.downloads} téléchargements</span>
                         </div>
-                        <Badge variant="secondary">
+                        <Badge variant="secondary" className="flex-shrink-0">
                           ⭐ {template.rating}
                         </Badge>
                       </div>
                     </div>
-                    <div className="flex flex-wrap gap-2 ml-4">
+                    <div className="flex flex-wrap gap-2 lg:flex-col lg:flex-shrink-0">
                       <Button
                         size="sm"
                         variant="outline"
                         className="flex-shrink-0"
                         onClick={() => handleStar(template.id)}
+                        title="Ajouter aux favoris"
                       >
                         <Star className="w-4 h-4" />
                       </Button>
@@ -228,6 +229,7 @@ export function CustomFormLibrary() {
                             detail: { templateId: template.id, templateTitle: template.title }
                           }));
                         }}
+                        title="Modifier le modèle"
                       >
                         <Edit className="w-4 h-4" />
                       </Button>
@@ -235,6 +237,7 @@ export function CustomFormLibrary() {
                         size="sm"
                         className="flex-shrink-0"
                         onClick={() => handleDownload(template)}
+                        title="Télécharger le modèle"
                       >
                         <Download className="w-4 h-4 mr-2" />
                         Télécharger

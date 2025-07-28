@@ -67,30 +67,35 @@ export function SavedSearchCard({ search }: SavedSearchCardProps) {
             </div>
           </div>
           
-          <div className="flex flex-wrap gap-2">
-            <Button 
-              variant="outline" 
-              size="sm"
-              className="flex-shrink-0"
-              onClick={buttonHandlers.editSavedSearch(search.title)}
-            >
-              <Edit className="w-4 h-4 mr-2" />
-              Modifier
-            </Button>
-            <Button 
-              variant="outline" 
-              size="sm"
-              className="flex-shrink-0"
-              onClick={buttonHandlers.executeSavedSearch(search.title)}
-            >
-              <Search className="w-4 h-4 mr-2" />
-              Relancer
-            </Button>
+          <div className="flex flex-col sm:flex-row gap-2">
+            <div className="flex flex-wrap gap-2">
+              <Button 
+                variant="outline" 
+                size="sm"
+                className="flex-shrink-0"
+                onClick={buttonHandlers.editSavedSearch(search.title)}
+                title="Modifier la recherche"
+              >
+                <Edit className="w-4 h-4 mr-2" />
+                Modifier
+              </Button>
+              <Button 
+                variant="outline" 
+                size="sm"
+                className="flex-shrink-0"
+                onClick={buttonHandlers.executeSavedSearch(search.title)}
+                title="Relancer la recherche"
+              >
+                <Search className="w-4 h-4 mr-2" />
+                Relancer
+              </Button>
+            </div>
             <Button 
               variant="outline" 
               size="sm" 
               className="text-red-600 hover:text-red-700 flex-shrink-0"
               onClick={buttonHandlers.deleteSavedSearch(search.title)}
+              title="Supprimer la recherche"
             >
               <Trash2 className="w-4 h-4" />
             </Button>
