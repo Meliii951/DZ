@@ -147,12 +147,6 @@ export function EnhancedForum() {
     }
   ];
 
-  const filteredDiscussions = forumData.filter(discussion =>
-    discussion.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    discussion.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    discussion.author.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
   return (
     <div className="space-y-6">
       {/* Header avec boutons d'action */}
