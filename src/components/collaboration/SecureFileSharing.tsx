@@ -4,6 +4,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Pagination } from '@/components/common/Pagination';
+import { usePagination } from '@/hooks/usePagination';
 import { AddSharedResourceModal } from '@/components/modals/AddSharedResourceModal';
 import {
   Share2,
@@ -142,6 +144,45 @@ export function SecureFileSharing() {
       shared: "2025-01-01",
       access: "public",
       tags: ["liens", "sites", "références"]
+    },
+    {
+      id: 10,
+      title: "Modèle de Contrat de Location",
+      type: "document",
+      category: "Modèles",
+      author: "Cabinet Immobilier",
+      size: "1.5 MB",
+      downloads: 567,
+      views: 2341,
+      shared: "2025-01-04",
+      access: "public",
+      tags: ["location", "immobilier", "contrat"]
+    },
+    {
+      id: 11,
+      title: "Guide Procédure Contentieuse",
+      type: "document",
+      category: "Guides",
+      author: "M. Khelifi",
+      size: "2.7 MB",
+      downloads: 234,
+      views: 987,
+      shared: "2025-01-03",
+      access: "members",
+      tags: ["contentieux", "procédure", "guide"]
+    },
+    {
+      id: 12,
+      title: "Base de données législative",
+      type: "link",
+      category: "Législation",
+      author: "Assemblée Populaire Nationale",
+      size: "-",
+      downloads: 789,
+      views: 4567,
+      shared: "2025-01-02",
+      access: "public",
+      tags: ["législation", "lois", "base"]
     }
   ];
 
@@ -150,6 +191,20 @@ export function SecureFileSharing() {
     resource.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
     resource.author.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  // Pagination pour les ressources partagées
+  const {
+    currentData: paginatedResources,
+    currentPage,
+    totalPages,
+    itemsPerPage,
+    totalItems,
+    setCurrentPage,
+    setItemsPerPage
+  } = usePagination({
+    data: filteredResources,
+    itemsPerPage: 10
+  });
 
   const getTypeIcon = (type: string) => {
     switch (type) {
@@ -255,8 +310,9 @@ export function SecureFileSharing() {
           <TabsTrigger value="templates">Modèles</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="all" className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          {filteredResources.map((resource) => {
+        <TabsContent value="all" className="space-y-4">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {paginatedResources.map((resource) => {
             const TypeIcon = getTypeIcon(resource.type);
             return (
               <Card key={resource.id} className="hover:shadow-md transition-shadow">
@@ -344,6 +400,17 @@ export function SecureFileSharing() {
               </Card>
             );
           })}
+          </div>
+          
+          {/* Pagination pour toutes les ressources */}
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            totalItems={totalItems}
+            itemsPerPage={itemsPerPage}
+            onPageChange={setCurrentPage}
+            onItemsPerPageChange={setItemsPerPage}
+          />
         </TabsContent>
 
         <TabsContent value="documents" className="grid grid-cols-1 lg:grid-cols-2 gap-4">
