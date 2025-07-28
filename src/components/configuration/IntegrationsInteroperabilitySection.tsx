@@ -6,6 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Switch } from "@/components/ui/switch";
 import { Progress } from "@/components/ui/progress";
+import { Pagination } from "@/components/common/Pagination";
+import { usePagination } from "@/hooks/usePagination";
 import { SectionHeader } from "@/components/common/SectionHeader";
 import { 
   Zap, 
@@ -56,7 +58,14 @@ export function IntegrationsInteroperabilitySection({ language = "fr" }: Integra
     { name: "Base Nationale des Entreprises", status: "connected", type: "Business", uptime: "99.5%", requests: "892/day" },
     { name: "Registre du Commerce", status: "connected", type: "Commercial", uptime: "99.9%", requests: "2,156/day" },
     { name: "Système Judiciaire", status: "maintenance", type: "Judicial", uptime: "98.2%", requests: "456/day" },
-    { name: "Archives Nationales", status: "connected", type: "Archives", uptime: "99.7%", requests: "678/day" }
+    { name: "Archives Nationales", status: "connected", type: "Archives", uptime: "99.7%", requests: "678/day" },
+    { name: "Système Fiscal", status: "connected", type: "Fiscal", uptime: "99.6%", requests: "3,456/day" },
+    { name: "Base de Données Sociale", status: "connected", type: "Social", uptime: "99.4%", requests: "1,789/day" },
+    { name: "Système de Santé", status: "maintenance", type: "Health", uptime: "97.8%", requests: "2,345/day" },
+    { name: "Registre Foncier", status: "connected", type: "Property", uptime: "99.3%", requests: "567/day" },
+    { name: "Système Éducatif", status: "connected", type: "Education", uptime: "99.1%", requests: "1,234/day" },
+    { name: "Base de Données Douanière", status: "connected", type: "Customs", uptime: "99.5%", requests: "4,567/day" },
+    { name: "Système de Transport", status: "maintenance", type: "Transport", uptime: "98.5%", requests: "890/day" }
   ];
 
   const apiEndpoints = [
@@ -64,7 +73,14 @@ export function IntegrationsInteroperabilitySection({ language = "fr" }: Integra
     { endpoint: "/api/v1/procedures", method: "POST", status: "active", calls: "8,567", avgTime: "67ms" },
     { endpoint: "/api/v1/search", method: "GET", status: "active", calls: "23,456", avgTime: "123ms" },
     { endpoint: "/api/v1/documents", method: "PUT", status: "active", calls: "4,123", avgTime: "89ms" },
-    { endpoint: "/api/v1/users", method: "GET", status: "maintenance", calls: "2,789", avgTime: "156ms" }
+    { endpoint: "/api/v1/users", method: "GET", status: "maintenance", calls: "2,789", avgTime: "156ms" },
+    { endpoint: "/api/v1/notifications", method: "POST", status: "active", calls: "12,345", avgTime: "34ms" },
+    { endpoint: "/api/v1/audit", method: "GET", status: "active", calls: "6,789", avgTime: "78ms" },
+    { endpoint: "/api/v1/export", method: "POST", status: "active", calls: "3,456", avgTime: "234ms" },
+    { endpoint: "/api/v1/import", method: "POST", status: "maintenance", calls: "1,234", avgTime: "456ms" },
+    { endpoint: "/api/v1/backup", method: "GET", status: "active", calls: "567", avgTime: "890ms" },
+    { endpoint: "/api/v1/restore", method: "POST", status: "active", calls: "123", avgTime: "1,234ms" },
+    { endpoint: "/api/v1/health", method: "GET", status: "active", calls: "45,678", avgTime: "12ms" }
   ];
 
   const standardsCompliance = [
@@ -73,7 +89,13 @@ export function IntegrationsInteroperabilitySection({ language = "fr" }: Integra
     { standard: "OAuth 2.0", compliance: 100, status: "compliant", description: "Authentification sécurisée" },
     { standard: "SAML 2.0", compliance: 85, status: "partial", description: "Single Sign-On" },
     { standard: "FHIR R4", compliance: 70, status: "partial", description: "Échange données santé" },
-    { standard: "HL7", compliance: 60, status: "development", description: "Standards santé" }
+    { standard: "HL7", compliance: 60, status: "development", description: "Standards santé" },
+    { standard: "ISO 27001", compliance: 90, status: "compliant", description: "Sécurité de l'information" },
+    { standard: "GDPR", compliance: 95, status: "compliant", description: "Protection des données" },
+    { standard: "WCAG 2.1", compliance: 88, status: "compliant", description: "Accessibilité web" },
+    { standard: "XML Schema", compliance: 100, status: "compliant", description: "Validation XML" },
+    { standard: "REST API", compliance: 100, status: "compliant", description: "Architecture REST" },
+    { standard: "GraphQL", compliance: 75, status: "partial", description: "API GraphQL" }
   ];
 
   const dataFormats = [
@@ -97,6 +119,48 @@ export function IntegrationsInteroperabilitySection({ language = "fr" }: Integra
       default: return 'bg-gray-100 text-gray-800';
     }
   };
+
+  // Pagination pour les intégrations actives
+  const {
+    currentData: paginatedIntegrations,
+    currentPage: integrationsCurrentPage,
+    totalPages: integrationsTotalPages,
+    itemsPerPage: integrationsItemsPerPage,
+    totalItems: integrationsTotalItems,
+    setCurrentPage: setIntegrationsCurrentPage,
+    setItemsPerPage: setIntegrationsItemsPerPage
+  } = usePagination({
+    data: activeIntegrations,
+    itemsPerPage: 10
+  });
+
+  // Pagination pour les endpoints API
+  const {
+    currentData: paginatedApiEndpoints,
+    currentPage: apiEndpointsCurrentPage,
+    totalPages: apiEndpointsTotalPages,
+    itemsPerPage: apiEndpointsItemsPerPage,
+    totalItems: apiEndpointsTotalItems,
+    setCurrentPage: setApiEndpointsCurrentPage,
+    setItemsPerPage: setApiEndpointsItemsPerPage
+  } = usePagination({
+    data: apiEndpoints,
+    itemsPerPage: 10
+  });
+
+  // Pagination pour les standards de conformité
+  const {
+    currentData: paginatedStandards,
+    currentPage: standardsCurrentPage,
+    totalPages: standardsTotalPages,
+    itemsPerPage: standardsItemsPerPage,
+    totalItems: standardsTotalItems,
+    setCurrentPage: setStandardsCurrentPage,
+    setItemsPerPage: setStandardsItemsPerPage
+  } = usePagination({
+    data: standardsCompliance,
+    itemsPerPage: 10
+  });
 
   const getComplianceColor = (compliance: number) => {
     if (compliance >= 90) return 'text-green-600';
@@ -124,8 +188,9 @@ export function IntegrationsInteroperabilitySection({ language = "fr" }: Integra
         </TabsList>
 
         <TabsContent value="integrations" className="space-y-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {activeIntegrations.map((integration, index) => (
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {paginatedIntegrations.map((integration, index) => (
               <Card key={index}>
                 <CardContent className="pt-6">
                   <div className="flex items-center justify-between mb-4">
