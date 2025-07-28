@@ -214,37 +214,37 @@ export function AlertsNotificationsSection({ language = "fr" }: AlertsNotificati
             </Button>
           </div>
           
-          <div className="space-y-3">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {generalAlerts.map((alert) => (
-              <Card key={alert.id}>
+              <Card key={alert.id} className="hover:shadow-md transition-shadow">
                 <CardContent className="pt-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <div className="flex items-center gap-2">
-                        {alert.type === 'law' && <FileText className="w-5 h-5 text-blue-600" />}
-                        {alert.type === 'regulation' && <Settings className="w-5 h-5 text-green-600" />}
-                        {alert.type === 'circular' && <MessageSquare className="w-5 h-5 text-purple-600" />}
-                        {alert.type === 'jurisprudence' && <Users className="w-5 h-5 text-orange-600" />}
-                        <div>
-                          <h4 className="font-semibold">{alert.title}</h4>
+                  <div className="flex flex-col gap-3">
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-center gap-3">
+                        {alert.type === 'law' && <FileText className="w-5 h-5 text-blue-600 flex-shrink-0" />}
+                        {alert.type === 'regulation' && <Settings className="w-5 h-5 text-green-600 flex-shrink-0" />}
+                        {alert.type === 'circular' && <MessageSquare className="w-5 h-5 text-purple-600 flex-shrink-0" />}
+                        {alert.type === 'jurisprudence' && <Users className="w-5 h-5 text-orange-600 flex-shrink-0" />}
+                        <div className="min-w-0 flex-1">
+                          <h4 className="font-semibold truncate">{alert.title}</h4>
                           <div className="flex items-center gap-2 text-sm text-gray-600">
-                            <span>{alert.date}</span>
+                            <span className="truncate">{alert.date}</span>
                             <span>•</span>
-                            <span>Canaux: {alert.channels.join(', ')}</span>
+                            <span className="truncate">Canaux: {alert.channels.join(', ')}</span>
                           </div>
                         </div>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <Badge className={getPriorityColor(alert.priority)}>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Badge className={`flex-shrink-0 ${getPriorityColor(alert.priority)}`}>
                         {alert.priority}
                       </Badge>
-                      <Badge className={getStatusColor(alert.status)}>
+                      <Badge className={`flex-shrink-0 ${getStatusColor(alert.status)}`}>
                         {alert.status === 'active' ? 'Actif' : 
                          alert.status === 'sent' ? 'Envoyé' : 
                          alert.status === 'scheduled' ? 'Planifié' : alert.status}
                       </Badge>
-                      <Button variant="outline" className="text-xs">
+                      <Button variant="outline" className="text-xs flex-shrink-0 ml-auto">
                         <Edit className="w-3 h-3 mr-1" />
                         Modifier
                       </Button>
@@ -357,37 +357,41 @@ export function AlertsNotificationsSection({ language = "fr" }: AlertsNotificati
             </div>
           </div>
           
-          <div className="space-y-3">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {pushNotifications.map((notification) => (
               <Card key={notification.id} className={cn(
                 "transition-all cursor-pointer hover:shadow-md",
                 !notification.read && "border-l-4 border-l-blue-500 bg-blue-50/30"
               )}>
                 <CardContent className="pt-4">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        {notification.type === 'law' && <FileText className="w-4 h-4 text-blue-600" />}
-                        {notification.type === 'regulation' && <Settings className="w-4 h-4 text-green-600" />}
-                        {notification.type === 'circular' && <MessageSquare className="w-4 h-4 text-purple-600" />}
-                        {notification.type === 'jurisprudence' && <Users className="w-4 h-4 text-orange-600" />}
-                        <h4 className={cn(
-                          "font-semibold",
-                          !notification.read && "text-blue-900"
-                        )}>{notification.title}</h4>
-                        <Badge className={getPriorityColor(notification.priority)}>
-                          {notification.priority}
-                        </Badge>
+                  <div className="flex flex-col gap-3">
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-center gap-3 min-w-0 flex-1">
+                        {notification.type === 'law' && <FileText className="w-4 h-4 text-blue-600 flex-shrink-0" />}
+                        {notification.type === 'regulation' && <Settings className="w-4 h-4 text-green-600 flex-shrink-0" />}
+                        {notification.type === 'circular' && <MessageSquare className="w-4 h-4 text-purple-600 flex-shrink-0" />}
+                        {notification.type === 'jurisprudence' && <Users className="w-4 h-4 text-orange-600 flex-shrink-0" />}
+                        <div className="min-w-0 flex-1">
+                          <h4 className={cn(
+                            "font-semibold truncate",
+                            !notification.read && "text-blue-900"
+                          )}>{notification.title}</h4>
+                          <p className="text-sm text-gray-600 truncate">{notification.time}</p>
+                        </div>
                       </div>
-                      <p className="text-sm text-gray-600">{notification.time}</p>
+                      <div className="flex items-center gap-2 flex-shrink-0">
+                        {!notification.read && (
+                          <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                        )}
+                        <Button variant="ghost" className="p-2">
+                          <Bell className="w-4 h-4" />
+                        </Button>
+                      </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      {!notification.read && (
-                        <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                      )}
-                      <Button variant="ghost" className="p-2">
-                        <Bell className="w-4 h-4" />
-                      </Button>
+                      <Badge className={`flex-shrink-0 ${getPriorityColor(notification.priority)}`}>
+                        {notification.priority}
+                      </Badge>
                     </div>
                   </div>
                 </CardContent>
@@ -415,43 +419,43 @@ export function AlertsNotificationsSection({ language = "fr" }: AlertsNotificati
             </div>
           </div>
           
-          <div className="space-y-3">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {regulatoryDeadlines.map((deadline) => (
-              <Card key={deadline.id}>
+              <Card key={deadline.id} className="hover:shadow-md transition-shadow">
                 <CardContent className="pt-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-4">
-                      <div className="flex items-center gap-2">
-                        <Calendar className="w-5 h-5 text-blue-600" />
-                        <div>
-                          <h4 className="font-semibold">{deadline.title}</h4>
-                          <p className="text-sm text-gray-600">{deadline.date}</p>
+                  <div className="flex flex-col gap-3">
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-center gap-3 min-w-0 flex-1">
+                        <Calendar className="w-5 h-5 text-blue-600 flex-shrink-0" />
+                        <div className="min-w-0 flex-1">
+                          <h4 className="font-semibold truncate">{deadline.title}</h4>
+                          <p className="text-sm text-gray-600 truncate">{deadline.date}</p>
                         </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <Badge variant="outline">{deadline.category}</Badge>
-                        <Badge className={getPriorityColor(deadline.priority)}>
-                          {deadline.priority}
-                        </Badge>
-                        <Badge className={getStatusColor(deadline.status)}>
-                          {deadline.status === 'pending' && 'En attente'}
-                          {deadline.status === 'in-progress' && 'En cours'}
-                          {deadline.status === 'scheduled' && 'Planifié'}
-                          {deadline.status === 'completed' && 'Terminé'}
-                        </Badge>
+                      <div className="flex items-center gap-2 flex-shrink-0">
+                        {deadline.status === 'completed' ? (
+                          <CheckCircle className="w-5 h-5 text-green-600" />
+                        ) : deadline.priority === 'high' ? (
+                          <AlertCircle className="w-5 h-5 text-red-600" />
+                        ) : (
+                          <Clock className="w-5 h-5 text-orange-600" />
+                        )}
+                        <Button variant="outline" className="p-2">
+                          <Edit className="w-4 h-4" />
+                        </Button>
                       </div>
                     </div>
-                    <div className="flex gap-2">
-                      {deadline.status === 'completed' ? (
-                        <CheckCircle className="w-5 h-5 text-green-600" />
-                      ) : deadline.priority === 'high' ? (
-                        <AlertCircle className="w-5 h-5 text-red-600" />
-                      ) : (
-                        <Clock className="w-5 h-5 text-orange-600" />
-                      )}
-                      <Button variant="outline">
-                        <Edit className="w-4 h-4" />
-                      </Button>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <Badge variant="outline" className="flex-shrink-0">{deadline.category}</Badge>
+                      <Badge className={`flex-shrink-0 ${getPriorityColor(deadline.priority)}`}>
+                        {deadline.priority}
+                      </Badge>
+                      <Badge className={`flex-shrink-0 ${getStatusColor(deadline.status)}`}>
+                        {deadline.status === 'pending' && 'En attente'}
+                        {deadline.status === 'in-progress' && 'En cours'}
+                        {deadline.status === 'scheduled' && 'Planifié'}
+                        {deadline.status === 'completed' && 'Terminé'}
+                      </Badge>
                     </div>
                   </div>
                 </CardContent>
