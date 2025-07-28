@@ -387,126 +387,6 @@ export function ProcedureResourcesSection() {
           </div>
         </TabsContent>
 
-
-
-            <Card className="hover:shadow-md transition-shadow">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base">Permis et autorisations</CardTitle>
-                <CardDescription className="text-sm">
-                  Guide pour obtenir permis et autorisations diverses
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="flex items-center gap-2 text-xs text-gray-500">
-                  <Calendar className="w-3 h-3" />
-                  Mis à jour le 08/03/2024
-                </div>
-                <div className="space-y-2">
-                  <p className="text-xs text-gray-600">• Permis de construire</p>
-                  <p className="text-xs text-gray-600">• Licences commerciales</p>
-                  <p className="text-xs text-gray-600">• Autorisations spéciales</p>
-                </div>
-                <Button 
-                  size="sm" 
-                  variant="outline" 
-                  className="w-full"
-                  onClick={() => handleConsultGuide("Permis et autorisations")}
-                >
-                  <ExternalLink className="w-3 h-3 mr-1" />
-                  Consulter
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="hover:shadow-md transition-shadow">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base">Procédures fiscales</CardTitle>
-                <CardDescription className="text-sm">
-                  Démarches fiscales et déclarations obligatoires
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="flex items-center gap-2 text-xs text-gray-500">
-                  <Calendar className="w-3 h-3" />
-                  Mis à jour le 05/03/2024
-                </div>
-                <div className="space-y-2">
-                  <p className="text-xs text-gray-600">• Déclarations fiscales</p>
-                  <p className="text-xs text-gray-600">• Numéro d'identification</p>
-                  <p className="text-xs text-gray-600">• Exonérations et régimes</p>
-                </div>
-                <Button 
-                  size="sm" 
-                  variant="outline" 
-                  className="w-full"
-                  onClick={() => handleConsultGuide("Procédures fiscales")}
-                >
-                  <ExternalLink className="w-3 h-3 mr-1" />
-                  Consulter
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="hover:shadow-md transition-shadow">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base">Procédures douanières</CardTitle>
-                <CardDescription className="text-sm">
-                  Import/export et démarches douanières
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="flex items-center gap-2 text-xs text-gray-500">
-                  <Calendar className="w-3 h-3" />
-                  Mis à jour le 02/03/2024
-                </div>
-                <div className="space-y-2">
-                  <p className="text-xs text-gray-600">• Déclarations douanières</p>
-                  <p className="text-xs text-gray-600">• Régimes suspensifs</p>
-                  <p className="text-xs text-gray-600">• Franchise et exemptions</p>
-                </div>
-                <Button 
-                  size="sm" 
-                  variant="outline" 
-                  className="w-full"
-                  onClick={() => handleConsultGuide("Procédures douanières")}
-                >
-                  <ExternalLink className="w-3 h-3 mr-1" />
-                  Consulter
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="hover:shadow-md transition-shadow">
-              <CardHeader className="pb-3">
-                <CardTitle className="text-base">Sécurité sociale</CardTitle>
-                <CardDescription className="text-sm">
-                  Affiliation et prestations de sécurité sociale
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="flex items-center gap-2 text-xs text-gray-500">
-                  <Calendar className="w-3 h-3" />
-                  Mis à jour le 28/02/2024
-                </div>
-                <div className="space-y-2">
-                  <p className="text-xs text-gray-600">• Affiliation employeurs</p>
-                  <p className="text-xs text-gray-600">• Carte Chifa</p>
-                  <p className="text-xs text-gray-600">• Prestations familiales</p>
-                </div>
-                <Button 
-                  size="sm" 
-                  variant="outline" 
-                  className="w-full"
-                  onClick={() => handleConsultGuide("Sécurité sociale")}
-                >
-                  <ExternalLink className="w-3 h-3 mr-1" />
-                  Consulter
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
-
         <TabsContent value="formulaires" className="space-y-4">
           <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -515,26 +395,25 @@ export function ProcedureResourcesSection() {
                   <CardHeader className="pb-3">
                     <div className="flex items-start justify-between">
                       <CardTitle className="text-base">{form.title}</CardTitle>
-                      <Badge variant="secondary" className="text-xs">{form.category}</Badge>
+                      <Badge variant="outline" className="text-xs">{form.category}</Badge>
                     </div>
                     <CardDescription className="text-sm">
                       {form.description}
                     </CardDescription>
                   </CardHeader>
                   <CardContent className="space-y-3">
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between text-xs text-gray-600">
-                        <span>Taille: {form.fileSize}</span>
-                        <span>{form.downloads} téléchargements</span>
-                      </div>
+                    <div className="flex items-center justify-between text-xs text-gray-500">
+                      <span>{form.fileSize}</span>
+                      <span>{form.downloads} téléchargements</span>
                     </div>
                     <Button 
                       size="sm" 
-                      className="w-full bg-blue-600 hover:bg-blue-700"
+                      variant="outline" 
+                      className="w-full"
                       onClick={() => handleDownloadForms(form.title)}
                     >
                       <Download className="w-3 h-3 mr-1" />
-                      Télécharger (ZIP)
+                      Télécharger
                     </Button>
                   </CardContent>
                 </Card>
@@ -550,143 +429,6 @@ export function ProcedureResourcesSection() {
               onPageChange={setFormsCurrentPage}
               onItemsPerPageChange={setFormsItemsPerPage}
             />
-          </div>
-        </TabsContent>
-
-            <Card className="hover:shadow-md transition-shadow">
-              <CardHeader className="pb-3">
-                <div className="flex items-start justify-between">
-                  <CardTitle className="text-base">État civil</CardTitle>
-                  <Badge variant="secondary" className="text-xs">8 docs</Badge>
-                </div>
-                <CardDescription className="text-sm">
-                  Demandes d'actes et extraits d'état civil
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="space-y-2">
-                  <p className="text-xs text-gray-600">• Demande acte de naissance</p>
-                  <p className="text-xs text-gray-600">• Extrait d'état civil</p>
-                  <p className="text-xs text-gray-600">• Certificat de vie</p>
-                </div>
-                <Button 
-                  size="sm" 
-                  className="w-full bg-blue-600 hover:bg-blue-700"
-                  onClick={() => handleDownloadForms("État civil")}
-                >
-                  <Download className="w-3 h-3 mr-1" />
-                  Télécharger (ZIP)
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="hover:shadow-md transition-shadow">
-              <CardHeader className="pb-3">
-                <div className="flex items-start justify-between">
-                  <CardTitle className="text-base">Permis et licences</CardTitle>
-                  <Badge variant="secondary" className="text-xs">12 docs</Badge>
-                </div>
-                <CardDescription className="text-sm">
-                  Demandes de permis et autorisations
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="space-y-2">
-                  <p className="text-xs text-gray-600">• Permis de construire</p>
-                  <p className="text-xs text-gray-600">• Licence d'importation</p>
-                  <p className="text-xs text-gray-600">• Autorisation d'exercice</p>
-                </div>
-                <Button 
-                  size="sm" 
-                  className="w-full bg-blue-600 hover:bg-blue-700"
-                  onClick={() => handleDownloadForms("Permis et licences")}
-                >
-                  <Download className="w-3 h-3 mr-1" />
-                  Télécharger (ZIP)
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="hover:shadow-md transition-shadow">
-              <CardHeader className="pb-3">
-                <div className="flex items-start justify-between">
-                  <CardTitle className="text-base">Fiscalité</CardTitle>
-                  <Badge variant="secondary" className="text-xs">10 docs</Badge>
-                </div>
-                <CardDescription className="text-sm">
-                  Formulaires fiscaux et déclarations
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="space-y-2">
-                  <p className="text-xs text-gray-600">• Déclaration annuelle</p>
-                  <p className="text-xs text-gray-600">• Demande NIF</p>
-                  <p className="text-xs text-gray-600">• Exonération fiscale</p>
-                </div>
-                <Button 
-                  size="sm" 
-                  className="w-full bg-blue-600 hover:bg-blue-700"
-                  onClick={() => handleDownloadForms("Fiscalité")}
-                >
-                  <Download className="w-3 h-3 mr-1" />
-                  Télécharger (ZIP)
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="hover:shadow-md transition-shadow">
-              <CardHeader className="pb-3">
-                <div className="flex items-start justify-between">
-                  <CardTitle className="text-base">Douanes</CardTitle>
-                  <Badge variant="secondary" className="text-xs">6 docs</Badge>
-                </div>
-                <CardDescription className="text-sm">
-                  Déclarations et formulaires douaniers
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="space-y-2">
-                  <p className="text-xs text-gray-600">• Déclaration import/export</p>
-                  <p className="text-xs text-gray-600">• Demande agrément</p>
-                  <p className="text-xs text-gray-600">• Franchise temporaire</p>
-                </div>
-                <Button 
-                  size="sm" 
-                  className="w-full bg-blue-600 hover:bg-blue-700"
-                  onClick={() => handleDownloadForms("Douanes")}
-                >
-                  <Download className="w-3 h-3 mr-1" />
-                  Télécharger (ZIP)
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="hover:shadow-md transition-shadow">
-              <CardHeader className="pb-3">
-                <div className="flex items-start justify-between">
-                  <CardTitle className="text-base">Protection sociale</CardTitle>
-                  <Badge variant="secondary" className="text-xs">9 docs</Badge>
-                </div>
-                <CardDescription className="text-sm">
-                  Formulaires CNAS, CNR et mutuelles
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="space-y-2">
-                  <p className="text-xs text-gray-600">• Affiliation CNAS</p>
-                  <p className="text-xs text-gray-600">• Demande Carte Chifa</p>
-                  <p className="text-xs text-gray-600">• Allocations familiales</p>
-                </div>
-                <Button 
-                  size="sm" 
-                  className="w-full bg-blue-600 hover:bg-blue-700"
-                  onClick={() => handleDownloadForms("Protection sociale")}
-                >
-                  <Download className="w-3 h-3 mr-1" />
-                  Télécharger (ZIP)
-                </Button>
-              </CardContent>
-            </Card>
           </div>
         </TabsContent>
       </Tabs>
