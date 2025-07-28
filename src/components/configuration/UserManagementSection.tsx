@@ -73,6 +73,48 @@ export function UserManagementSection({ language = "fr" }: UserManagementSection
     itemsPerPage: 10
   });
 
+  // Pagination pour les rôles
+  const {
+    currentData: paginatedRoles,
+    currentPage: rolesCurrentPage,
+    totalPages: rolesTotalPages,
+    itemsPerPage: rolesItemsPerPage,
+    totalItems: rolesTotalItems,
+    setCurrentPage: setRolesCurrentPage,
+    setItemsPerPage: setRolesItemsPerPage
+  } = usePagination({
+    data: roles,
+    itemsPerPage: 10
+  });
+
+  // Pagination pour les permissions
+  const {
+    currentData: paginatedPermissions,
+    currentPage: permissionsCurrentPage,
+    totalPages: permissionsTotalPages,
+    itemsPerPage: permissionsItemsPerPage,
+    totalItems: permissionsTotalItems,
+    setCurrentPage: setPermissionsCurrentPage,
+    setItemsPerPage: setPermissionsItemsPerPage
+  } = usePagination({
+    data: permissions,
+    itemsPerPage: 10
+  });
+
+  // Pagination pour les sessions
+  const {
+    currentData: paginatedSessions,
+    currentPage: sessionsCurrentPage,
+    totalPages: sessionsTotalPages,
+    itemsPerPage: sessionsItemsPerPage,
+    totalItems: sessionsTotalItems,
+    setCurrentPage: setSessionsCurrentPage,
+    setItemsPerPage: setSessionsItemsPerPage
+  } = usePagination({
+    data: activeSessions,
+    itemsPerPage: 10
+  });
+
   const roles = [
     { name: "Administrateur", users: 15, permissions: 45, description: "Accès complet au système", status: "Actif" },
     { name: "Gestionnaire", users: 89, permissions: 32, description: "Gestion des contenus et utilisateurs", status: "Actif" },
@@ -81,7 +123,11 @@ export function UserManagementSection({ language = "fr" }: UserManagementSection
     { name: "Consultant", users: 123, permissions: 15, description: "Consultation en lecture seule", status: "Actif" },
     { name: "Lecteur", users: 456, permissions: 8, description: "Lecture des documents publics", status: "Actif" },
     { name: "Archiviste", users: 23, permissions: 12, description: "Gestion des archives", status: "Inactif" },
-    { name: "Support", users: 12, permissions: 22, description: "Support technique et assistance", status: "Actif" }
+    { name: "Support", users: 12, permissions: 22, description: "Support technique et assistance", status: "Actif" },
+    { name: "Modérateur", users: 34, permissions: 20, description: "Modération du contenu", status: "Actif" },
+    { name: "Analyste", users: 78, permissions: 25, description: "Analyse des données", status: "Actif" },
+    { name: "Auditeur", users: 45, permissions: 15, description: "Audit et contrôle", status: "Actif" },
+    { name: "Formateur", users: 28, permissions: 18, description: "Formation des utilisateurs", status: "Actif" }
   ].filter(role => 
     role.name.toLowerCase().includes(rolesFilter.toLowerCase()) ||
     role.description.toLowerCase().includes(rolesFilter.toLowerCase())
@@ -95,7 +141,11 @@ export function UserManagementSection({ language = "fr" }: UserManagementSection
     { name: "Configurer Système", category: "Administration", users: 12, description: "Configuration du système" },
     { name: "Consulter Statistiques", category: "Analyse", users: 156, description: "Accès aux statistiques" },
     { name: "Exporter Données", category: "Export", users: 89, description: "Export des données" },
-    { name: "Gérer Procédures", category: "Procédures", users: 345, description: "Gestion des procédures administratives" }
+    { name: "Gérer Procédures", category: "Procédures", users: 345, description: "Gestion des procédures administratives" },
+    { name: "Gérer Alertes", category: "Notifications", users: 67, description: "Gestion des alertes et notifications" },
+    { name: "Consulter Logs", category: "Audit", users: 34, description: "Consultation des logs système" },
+    { name: "Gérer Sauvegardes", category: "Administration", users: 8, description: "Gestion des sauvegardes" },
+    { name: "Approuver Documents", category: "Validation", users: 123, description: "Approbation des documents" }
   ].filter(permission => 
     permission.name.toLowerCase().includes(permissionsFilter.toLowerCase()) ||
     permission.category.toLowerCase().includes(permissionsFilter.toLowerCase())
@@ -107,7 +157,13 @@ export function UserManagementSection({ language = "fr" }: UserManagementSection
     { user: "Mohamed Meziane", ip: "10.0.0.25", device: "Safari/macOS", location: "Constantine", start: "16:45", duration: "45m", status: "Active" },
     { user: "Karim Benaissa", ip: "172.16.0.50", device: "Edge/Windows", location: "Annaba", start: "08:45", duration: "7h15m", status: "Active" },
     { user: "Samira Belarbi", ip: "192.168.2.75", device: "Chrome/Android", location: "Sétif", start: "13:20", duration: "2h40m", status: "Idle" },
-    { user: "Nadia Saidi", ip: "10.1.0.100", device: "Firefox/Windows", location: "Alger", start: "15:10", duration: "50m", status: "Active" }
+    { user: "Nadia Saidi", ip: "10.1.0.100", device: "Firefox/Windows", location: "Alger", start: "15:10", duration: "50m", status: "Active" },
+    { user: "Omar Khadra", ip: "192.168.1.102", device: "Chrome/Linux", location: "Oran", start: "12:00", duration: "3h30m", status: "Active" },
+    { user: "Aicha Brahimi", ip: "10.0.0.26", device: "Safari/Windows", location: "Constantine", start: "09:30", duration: "6h20m", status: "Active" },
+    { user: "Youssef Mansouri", ip: "172.16.0.51", device: "Edge/macOS", location: "Annaba", start: "11:15", duration: "4h45m", status: "Idle" },
+    { user: "Leila Hamidi", ip: "192.168.2.76", device: "Firefox/Android", location: "Sétif", start: "08:20", duration: "8h10m", status: "Active" },
+    { user: "Hassan Boudiaf", ip: "10.1.0.101", device: "Chrome/Windows", location: "Alger", start: "13:45", duration: "1h25m", status: "Active" },
+    { user: "Zineb Merabet", ip: "192.168.1.103", device: "Safari/Linux", location: "Oran", start: "10:00", duration: "5h15m", status: "Active" }
   ].filter(session => 
     session.user.toLowerCase().includes(sessionsFilter.toLowerCase()) ||
     session.location.toLowerCase().includes(sessionsFilter.toLowerCase()) ||
@@ -231,8 +287,9 @@ export function UserManagementSection({ language = "fr" }: UserManagementSection
             </Button>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {roles.map((role, index) => (
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {paginatedRoles.map((role, index) => (
               <Card key={index}>
                 <CardContent className="pt-6">
                   <div className="flex items-start justify-between">
@@ -263,6 +320,16 @@ export function UserManagementSection({ language = "fr" }: UserManagementSection
               </Card>
             ))}
           </div>
+          
+          {/* Pagination pour les rôles */}
+          <Pagination
+            currentPage={rolesCurrentPage}
+            totalPages={rolesTotalPages}
+            totalItems={rolesTotalItems}
+            itemsPerPage={rolesItemsPerPage}
+            onPageChange={setRolesCurrentPage}
+            onItemsPerPageChange={setRolesItemsPerPage}
+          />
         </TabsContent>
 
         <TabsContent value="permissions" className="space-y-4">
@@ -282,9 +349,10 @@ export function UserManagementSection({ language = "fr" }: UserManagementSection
             </Button>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {permissions.map((permission, index) => (
-              <Card key={index}>
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {paginatedPermissions.map((permission, index) => (
+                <Card key={index}>
                 <CardContent className="pt-6">
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
@@ -309,6 +377,16 @@ export function UserManagementSection({ language = "fr" }: UserManagementSection
               </Card>
             ))}
           </div>
+          
+          {/* Pagination pour les permissions */}
+          <Pagination
+            currentPage={permissionsCurrentPage}
+            totalPages={permissionsTotalPages}
+            totalItems={permissionsTotalItems}
+            itemsPerPage={permissionsItemsPerPage}
+            onPageChange={setPermissionsCurrentPage}
+            onItemsPerPageChange={setPermissionsItemsPerPage}
+          />
         </TabsContent>
 
         <TabsContent value="sessions" className="space-y-4">
@@ -333,8 +411,9 @@ export function UserManagementSection({ language = "fr" }: UserManagementSection
             </div>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {activeSessions.map((session, index) => (
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              {paginatedSessions.map((session, index) => (
               <Card key={index}>
                 <CardContent className="pt-4">
                   <div className="flex items-center justify-between">
@@ -373,6 +452,16 @@ export function UserManagementSection({ language = "fr" }: UserManagementSection
               </Card>
             ))}
           </div>
+          
+          {/* Pagination pour les sessions */}
+          <Pagination
+            currentPage={sessionsCurrentPage}
+            totalPages={sessionsTotalPages}
+            totalItems={sessionsTotalItems}
+            itemsPerPage={sessionsItemsPerPage}
+            onPageChange={setSessionsCurrentPage}
+            onItemsPerPageChange={setSessionsItemsPerPage}
+          />
         </TabsContent>
       </Tabs>
 
