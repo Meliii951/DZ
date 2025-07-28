@@ -154,7 +154,6 @@ export function LegalTextsFeatured() {
   });
 
   return (
-    <>
     <div className="space-y-4">
       <div className="flex items-center gap-2">
         <Star className="w-6 h-6 text-yellow-500" />
@@ -205,24 +204,25 @@ export function LegalTextsFeatured() {
                       <Eye className="w-4 h-4 mr-1" />
                       Consulter
                     </Button>
-                  <Button 
-                    size="sm" 
-                    className="flex-1 bg-emerald-600 hover:bg-emerald-700"
-                    onClick={() => {
-                      openDownload({
-                        title: text.title,
-                        type: text.type || 'Texte juridique'
-                      });
-                    }}
-                  >
-                    <Download className="w-4 h-4 mr-1" />
-                    Télécharger
-                  </Button>
+                    <Button 
+                      size="sm" 
+                      className="flex-1 bg-emerald-600 hover:bg-emerald-700"
+                      onClick={() => {
+                        openDownload({
+                          title: text.title,
+                          type: text.type || 'Texte juridique'
+                        });
+                      }}
+                    >
+                      <Download className="w-4 h-4 mr-1" />
+                      Télécharger
+                    </Button>
+                  </div>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-        ))}
+              </CardContent>
+            </Card>
+          ))}
+        </div>
         
         {/* Pagination */}
         <Pagination
@@ -234,31 +234,30 @@ export function LegalTextsFeatured() {
           onItemsPerPageChange={setItemsPerPage}
         />
       </div>
+      
+      {/* Modales fonctionnelles */}
+      {modals.documentView.document && (
+        <DocumentViewModal
+          isOpen={modals.documentView.isOpen}
+          onClose={() => closeModal('documentView')}
+          document={modals.documentView.document}
+        />
+      )}
+      
+      {modals.download.document && (
+        <DownloadModal
+          isOpen={modals.download.isOpen}
+          onClose={() => closeModal('download')}
+          document={modals.download.document}
+        />
+      )}
+      
+      <ComparisonModal
+        isOpen={modals.comparison.isOpen}
+        onClose={() => closeModal('comparison')}
+        items={modals.comparison.items}
+        type={modals.comparison.type}
+      />
     </div>
-    
-    {/* Modales fonctionnelles */}
-    {modals.documentView.document && (
-      <DocumentViewModal
-        isOpen={modals.documentView.isOpen}
-        onClose={() => closeModal('documentView')}
-        document={modals.documentView.document}
-      />
-    )}
-    
-    {modals.download.document && (
-      <DownloadModal
-        isOpen={modals.download.isOpen}
-        onClose={() => closeModal('download')}
-        document={modals.download.document}
-      />
-    )}
-    
-    <ComparisonModal
-      isOpen={modals.comparison.isOpen}
-      onClose={() => closeModal('comparison')}
-      items={modals.comparison.items}
-      type={modals.comparison.type}
-    />
-    </>
   );
 }
