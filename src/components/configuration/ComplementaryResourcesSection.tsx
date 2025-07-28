@@ -148,6 +148,76 @@ export function ComplementaryResourcesSection({ language = "fr" }: Complementary
     api.category.toLowerCase().includes(apiFilter.toLowerCase())
   );
 
+  // Pagination pour les sources juridiques
+  const {
+    currentData: paginatedSources,
+    currentPage: sourcesCurrentPage,
+    totalPages: sourcesTotalPages,
+    itemsPerPage: sourcesItemsPerPage,
+    totalItems: sourcesTotalItems,
+    setCurrentPage: setSourcesCurrentPage,
+    setItemsPerPage: setSourcesItemsPerPage
+  } = usePagination({
+    data: filteredSources,
+    itemsPerPage: 10
+  });
+
+  // Pagination pour les bases de données
+  const {
+    currentData: paginatedDatabases,
+    currentPage: databasesCurrentPage,
+    totalPages: databasesTotalPages,
+    itemsPerPage: databasesItemsPerPage,
+    totalItems: databasesTotalItems,
+    setCurrentPage: setDatabasesCurrentPage,
+    setItemsPerPage: setDatabasesItemsPerPage
+  } = usePagination({
+    data: filteredDatabases,
+    itemsPerPage: 10
+  });
+
+  // Pagination pour les modèles de documents
+  const {
+    currentData: paginatedTemplates,
+    currentPage: templatesCurrentPage,
+    totalPages: templatesTotalPages,
+    itemsPerPage: templatesItemsPerPage,
+    totalItems: templatesTotalItems,
+    setCurrentPage: setTemplatesCurrentPage,
+    setItemsPerPage: setTemplatesItemsPerPage
+  } = usePagination({
+    data: filteredTemplates,
+    itemsPerPage: 10
+  });
+
+  // Pagination pour les modèles de workflow
+  const {
+    currentData: paginatedWorkflows,
+    currentPage: workflowsCurrentPage,
+    totalPages: workflowsTotalPages,
+    itemsPerPage: workflowsItemsPerPage,
+    totalItems: workflowsTotalItems,
+    setCurrentPage: setWorkflowsCurrentPage,
+    setItemsPerPage: setWorkflowsItemsPerPage
+  } = usePagination({
+    data: filteredWorkflows,
+    itemsPerPage: 10
+  });
+
+  // Pagination pour les APIs
+  const {
+    currentData: paginatedApis,
+    currentPage: apisCurrentPage,
+    totalPages: apisTotalPages,
+    itemsPerPage: apisItemsPerPage,
+    totalItems: apisTotalItems,
+    setCurrentPage: setApisCurrentPage,
+    setItemsPerPage: setApisItemsPerPage
+  } = usePagination({
+    data: filteredApis,
+    itemsPerPage: 10
+  });
+
   return (
     <div className="space-y-6">
       <Tabs defaultValue="sources" className="w-full">
@@ -177,7 +247,7 @@ export function ComplementaryResourcesSection({ language = "fr" }: Complementary
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {filteredSources.map((source, index) => (
+            {paginatedSources.map((source, index) => (
               <Card key={index}>
                 <CardContent className="pt-6">
                   <div className="flex items-start justify-between">
@@ -206,6 +276,16 @@ export function ComplementaryResourcesSection({ language = "fr" }: Complementary
               </Card>
             ))}
           </div>
+          
+          {/* Pagination pour les sources juridiques */}
+          <Pagination
+            currentPage={sourcesCurrentPage}
+            totalPages={sourcesTotalPages}
+            totalItems={sourcesTotalItems}
+            itemsPerPage={sourcesItemsPerPage}
+            onPageChange={setSourcesCurrentPage}
+            onItemsPerPageChange={setSourcesItemsPerPage}
+          />
         </TabsContent>
 
         <TabsContent value="databases" className="space-y-4">
@@ -226,7 +306,7 @@ export function ComplementaryResourcesSection({ language = "fr" }: Complementary
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {filteredDatabases.map((db, index) => (
+            {paginatedDatabases.map((db, index) => (
               <Card key={index}>
                 <CardContent className="pt-6">
                   <div className="flex items-start justify-between">
@@ -255,6 +335,16 @@ export function ComplementaryResourcesSection({ language = "fr" }: Complementary
               </Card>
             ))}
           </div>
+          
+          {/* Pagination pour les bases de données */}
+          <Pagination
+            currentPage={databasesCurrentPage}
+            totalPages={databasesTotalPages}
+            totalItems={databasesTotalItems}
+            itemsPerPage={databasesItemsPerPage}
+            onPageChange={setDatabasesCurrentPage}
+            onItemsPerPageChange={setDatabasesItemsPerPage}
+          />
         </TabsContent>
 
         <TabsContent value="templates" className="space-y-4">
@@ -275,7 +365,7 @@ export function ComplementaryResourcesSection({ language = "fr" }: Complementary
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {filteredTemplates.map((template, index) => (
+            {paginatedTemplates.map((template, index) => (
               <Card key={index}>
                 <CardContent className="pt-6">
                   <div className="flex items-start justify-between">
@@ -303,6 +393,16 @@ export function ComplementaryResourcesSection({ language = "fr" }: Complementary
               </Card>
             ))}
           </div>
+          
+          {/* Pagination pour les modèles de documents */}
+          <Pagination
+            currentPage={templatesCurrentPage}
+            totalPages={templatesTotalPages}
+            totalItems={templatesTotalItems}
+            itemsPerPage={templatesItemsPerPage}
+            onPageChange={setTemplatesCurrentPage}
+            onItemsPerPageChange={setTemplatesItemsPerPage}
+          />
         </TabsContent>
 
         <TabsContent value="workflows" className="space-y-4">
@@ -323,7 +423,7 @@ export function ComplementaryResourcesSection({ language = "fr" }: Complementary
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {filteredWorkflows.map((model, index) => (
+            {paginatedWorkflows.map((model, index) => (
               <Card key={index}>
                 <CardContent className="pt-6">
                   <div className="flex items-start justify-between">
@@ -351,6 +451,16 @@ export function ComplementaryResourcesSection({ language = "fr" }: Complementary
               </Card>
             ))}
           </div>
+          
+          {/* Pagination pour les modèles de workflow */}
+          <Pagination
+            currentPage={workflowsCurrentPage}
+            totalPages={workflowsTotalPages}
+            totalItems={workflowsTotalItems}
+            itemsPerPage={workflowsItemsPerPage}
+            onPageChange={setWorkflowsCurrentPage}
+            onItemsPerPageChange={setWorkflowsItemsPerPage}
+          />
         </TabsContent>
 
         <TabsContent value="api" className="space-y-4">
@@ -371,7 +481,7 @@ export function ComplementaryResourcesSection({ language = "fr" }: Complementary
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {filteredApis.map((api, index) => (
+            {paginatedApis.map((api, index) => (
               <Card key={index}>
                 <CardContent className="pt-6">
                   <div className="flex items-start justify-between">
@@ -402,6 +512,16 @@ export function ComplementaryResourcesSection({ language = "fr" }: Complementary
               </Card>
             ))}
           </div>
+          
+          {/* Pagination pour les APIs */}
+          <Pagination
+            currentPage={apisCurrentPage}
+            totalPages={apisTotalPages}
+            totalItems={apisTotalItems}
+            itemsPerPage={apisItemsPerPage}
+            onPageChange={setApisCurrentPage}
+            onItemsPerPageChange={setApisItemsPerPage}
+          />
         </TabsContent>
       </Tabs>
 
