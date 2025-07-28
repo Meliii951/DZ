@@ -3,6 +3,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Pagination } from '@/components/common/Pagination';
+import { usePagination } from '@/hooks/usePagination';
 import { 
   Mic, 
   MicOff, 
@@ -45,8 +47,92 @@ export function VoiceAssistant() {
       response: "إجراءات الطعن تتضمن تقديم طلب إلى المحكمة الإدارية خلال مهلة شهرين من تاريخ التبليغ.",
       language: 'ar',
       timestamp: 'Il y a 10 minutes'
+    },
+    {
+      id: 3,
+      question: "Comment procéder à un divorce par consentement mutuel ?",
+      response: "Le divorce par consentement mutuel nécessite un accord entre les époux et une procédure judiciaire simplifiée.",
+      language: 'fr',
+      timestamp: 'Il y a 15 minutes'
+    },
+    {
+      id: 4,
+      question: "ما هي حقوق العمال في القانون الجزائري؟",
+      response: "حقوق العمال تشمل الأجر العادل، الإجازات المدفوعة، والتأمين الاجتماعي.",
+      language: 'ar',
+      timestamp: 'Il y a 20 minutes'
+    },
+    {
+      id: 5,
+      question: "Quelles sont les conditions pour créer une entreprise ?",
+      response: "La création d'entreprise nécessite un plan d'affaires, un capital minimum et des autorisations administratives.",
+      language: 'fr',
+      timestamp: 'Il y a 25 minutes'
+    },
+    {
+      id: 6,
+      question: "كيفية الحصول على الجنسية الجزائرية؟",
+      response: "الحصول على الجنسية يتطلب الإقامة لمدة 7 سنوات والاندماج في المجتمع.",
+      language: 'ar',
+      timestamp: 'Il y a 30 minutes'
+    },
+    {
+      id: 7,
+      question: "Comment contester une amende de stationnement ?",
+      response: "La contestation d'une amende se fait par courrier recommandé dans un délai de 45 jours.",
+      language: 'fr',
+      timestamp: 'Il y a 35 minutes'
+    },
+    {
+      id: 8,
+      question: "ما هي إجراءات الطعن في قرارات الضرائب؟",
+      response: "الطعن في قرارات الضرائب يتم خلال مهلة 30 يوما من تاريخ التبليغ.",
+      language: 'ar',
+      timestamp: 'Il y a 40 minutes'
+    },
+    {
+      id: 9,
+      question: "Quels sont les droits des locataires ?",
+      response: "Les locataires ont droit à un logement décent et à la protection contre les expulsions abusives.",
+      language: 'fr',
+      timestamp: 'Il y a 45 minutes'
+    },
+    {
+      id: 10,
+      question: "كيفية الحصول على رخصة البناء؟",
+      response: "رخصة البناء تتطلب تقديم طلب إلى البلدية مع المخططات المطلوبة.",
+      language: 'ar',
+      timestamp: 'Il y a 50 minutes'
+    },
+    {
+      id: 11,
+      question: "Comment protéger ses droits d'auteur ?",
+      response: "La protection des droits d'auteur est automatique dès la création de l'œuvre.",
+      language: 'fr',
+      timestamp: 'Il y a 55 minutes'
+    },
+    {
+      id: 12,
+      question: "ما هي إجراءات الطعن في قرارات التأمين؟",
+      response: "الطعن في قرارات التأمين يتم أمام لجنة الطعن المختصة.",
+      language: 'ar',
+      timestamp: 'Il y a 1 heure'
     }
   ];
+
+  // Pagination pour les conversations vocales
+  const {
+    currentData: paginatedConversations,
+    currentPage: conversationsCurrentPage,
+    totalPages: conversationsTotalPages,
+    itemsPerPage: conversationsItemsPerPage,
+    totalItems: conversationsTotalItems,
+    setCurrentPage: setConversationsCurrentPage,
+    setItemsPerPage: setConversationsItemsPerPage
+  } = usePagination({
+    data: conversations,
+    itemsPerPage: 10
+  });
 
   const handleStartListening = () => {
     setIsListening(true);
@@ -199,7 +285,7 @@ export function VoiceAssistant() {
         </CardHeader>
         <CardContent>
           <div className="space-y-4">
-            {conversations.map((conv) => (
+            {paginatedConversations.map((conv) => (
               <div key={conv.id} className="border rounded-lg p-4 hover:bg-gray-50">
                 <div className="flex items-center justify-between mb-2">
                   <Badge variant="secondary">
@@ -246,6 +332,16 @@ export function VoiceAssistant() {
               </div>
             ))}
           </div>
+          
+          {/* Pagination pour les conversations vocales */}
+          <Pagination
+            currentPage={conversationsCurrentPage}
+            totalPages={conversationsTotalPages}
+            totalItems={conversationsTotalItems}
+            itemsPerPage={conversationsItemsPerPage}
+            onPageChange={setConversationsCurrentPage}
+            onItemsPerPageChange={setConversationsItemsPerPage}
+          />
         </CardContent>
       </Card>
 
