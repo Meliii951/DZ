@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
+import { Pagination } from '@/components/common/Pagination';
+import { usePagination } from '@/hooks/usePagination';
 import { 
   FileText, 
   PenTool, 
@@ -84,8 +86,94 @@ export function DocumentComposer() {
       complexity: 'Moyen',
       estimatedTime: '20-30 minutes',
       fields: ['Requérant', 'Administration', 'Objet', 'Moyens', 'Conclusions']
+    },
+    {
+      id: '5',
+      name: 'Bail Commercial',
+      category: 'Droit Commercial',
+      description: 'Contrat de bail commercial avec clauses de protection',
+      complexity: 'Moyen',
+      estimatedTime: '25-35 minutes',
+      fields: ['Bailleur', 'Locataire', 'Local', 'Loyer', 'Durée', 'Conditions']
+    },
+    {
+      id: '6',
+      name: 'Convention de Divorce',
+      category: 'Droit Civil',
+      description: 'Convention de divorce par consentement mutuel',
+      complexity: 'Complexe',
+      estimatedTime: '40-50 minutes',
+      fields: ['Époux', 'Enfants', 'Biens', 'Pension', 'Garde', 'Accord']
+    },
+    {
+      id: '7',
+      name: 'Procès-Verbal d\'Assemblée',
+      category: 'Droit Commercial',
+      description: 'Procès-verbal d\'assemblée générale ordinaire',
+      complexity: 'Simple',
+      estimatedTime: '10-15 minutes',
+      fields: ['Société', 'Date', 'Présents', 'Ordre du jour', 'Décisions']
+    },
+    {
+      id: '8',
+      name: 'Contrat de Prestation de Services',
+      category: 'Droit Commercial',
+      description: 'Contrat de prestation de services professionnels',
+      complexity: 'Moyen',
+      estimatedTime: '20-25 minutes',
+      fields: ['Prestataire', 'Client', 'Services', 'Tarifs', 'Durée', 'Conditions']
+    },
+    {
+      id: '9',
+      name: 'Testament Authentique',
+      category: 'Droit Civil',
+      description: 'Testament authentique devant notaire',
+      complexity: 'Complexe',
+      estimatedTime: '35-45 minutes',
+      fields: ['Testateur', 'Légataires', 'Biens', 'Conditions', 'Exécuteur']
+    },
+    {
+      id: '10',
+      name: 'Demande de Licence Commerciale',
+      category: 'Droit Administratif',
+      description: 'Demande de licence d\'exploitation commerciale',
+      complexity: 'Moyen',
+      estimatedTime: '15-20 minutes',
+      fields: ['Demandeur', 'Activité', 'Local', 'Documents', 'Garanties']
+    },
+    {
+      id: '11',
+      name: 'Contrat de Mariage',
+      category: 'Droit Civil',
+      description: 'Contrat de mariage avec régime matrimonial',
+      complexity: 'Complexe',
+      estimatedTime: '50-60 minutes',
+      fields: ['Époux', 'Régime', 'Biens', 'Clauses', 'Conditions']
+    },
+    {
+      id: '12',
+      name: 'Acte de Cession de Parts',
+      category: 'Droit Commercial',
+      description: 'Acte de cession de parts sociales',
+      complexity: 'Moyen',
+      estimatedTime: '25-30 minutes',
+      fields: ['Cédant', 'Cessionnaire', 'Parts', 'Prix', 'Conditions', 'Approbation']
     }
   ];
+
+  // Pagination pour les modèles disponibles
+  const {
+    currentData: paginatedTemplates,
+    currentPage: templatesCurrentPage,
+    totalPages: templatesTotalPages,
+    itemsPerPage: templatesItemsPerPage,
+    totalItems: templatesTotalItems,
+    setCurrentPage: setTemplatesCurrentPage,
+    setItemsPerPage: setTemplatesItemsPerPage
+  } = usePagination({
+    data: templates,
+    itemsPerPage: 10
+  });
 
   const documents: GeneratedDocument[] = [
     {
@@ -197,7 +285,7 @@ export function DocumentComposer() {
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {templates.map((template) => (
+                {paginatedTemplates.map((template) => (
                   <div key={template.id} className="border rounded-lg p-4 hover:shadow-md transition-shadow">
                     <div className="flex items-center justify-between mb-2">
                       <h3 className="font-semibold">{template.name}</h3>
@@ -237,6 +325,16 @@ export function DocumentComposer() {
                   </div>
                 ))}
               </div>
+              
+              {/* Pagination pour les modèles disponibles */}
+              <Pagination
+                currentPage={templatesCurrentPage}
+                totalPages={templatesTotalPages}
+                totalItems={templatesTotalItems}
+                itemsPerPage={templatesItemsPerPage}
+                onPageChange={setTemplatesCurrentPage}
+                onItemsPerPageChange={setTemplatesItemsPerPage}
+              />
             </CardContent>
           </Card>
         </TabsContent>
