@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Pagination } from "@/components/common/Pagination";
+import { usePagination } from "@/hooks/usePagination";
 import { 
   FileText, 
   Search, 
@@ -63,8 +65,110 @@ export function ConsolidatedTextsSection() {
       articles: 456,
       modifications: 12,
       statut: "À jour"
+    },
+    {
+      id: 5,
+      titre: "Code pénal algérien consolidé",
+      type: "Code",
+      domaine: "Droit Pénal",
+      derniereMiseAJour: "15 décembre 2023",
+      version: "2023.4",
+      articles: 789,
+      modifications: 23,
+      statut: "À jour"
+    },
+    {
+      id: 6,
+      titre: "Code de procédure pénale",
+      type: "Code",
+      domaine: "Procédure Pénale",
+      derniereMiseAJour: "10 décembre 2023",
+      version: "2023.3",
+      articles: 567,
+      modifications: 18,
+      statut: "À jour"
+    },
+    {
+      id: 7,
+      titre: "Code du travail consolidé",
+      type: "Code",
+      domaine: "Droit du Travail",
+      derniereMiseAJour: "05 décembre 2023",
+      version: "2023.4",
+      articles: 345,
+      modifications: 12,
+      statut: "En cours"
+    },
+    {
+      id: 8,
+      titre: "Code de commerce algérien",
+      type: "Code",
+      domaine: "Droit Commercial",
+      derniereMiseAJour: "01 décembre 2023",
+      version: "2023.3",
+      articles: 234,
+      modifications: 9,
+      statut: "À jour"
+    },
+    {
+      id: 9,
+      titre: "Loi sur les marchés publics consolidée",
+      type: "Loi",
+      domaine: "Administratif",
+      derniereMiseAJour: "25 novembre 2023",
+      version: "2023.3",
+      articles: 89,
+      modifications: 6,
+      statut: "À jour"
+    },
+    {
+      id: 10,
+      titre: "Code de l'environnement",
+      type: "Code",
+      domaine: "Environnement",
+      derniereMiseAJour: "20 novembre 2023",
+      version: "2023.2",
+      articles: 156,
+      modifications: 11,
+      statut: "À jour"
+    },
+    {
+      id: 11,
+      titre: "Code des assurances",
+      type: "Code",
+      domaine: "Assurances",
+      derniereMiseAJour: "15 novembre 2023",
+      version: "2023.2",
+      articles: 123,
+      modifications: 7,
+      statut: "En cours"
+    },
+    {
+      id: 12,
+      titre: "Loi sur la protection des données consolidée",
+      type: "Loi",
+      domaine: "Numérique",
+      derniereMiseAJour: "10 novembre 2023",
+      version: "2023.2",
+      articles: 67,
+      modifications: 4,
+      statut: "À jour"
     }
   ];
+
+  // Pagination pour les textes consolidés
+  const {
+    currentData: paginatedTexts,
+    currentPage: textsCurrentPage,
+    totalPages: textsTotalPages,
+    itemsPerPage: textsItemsPerPage,
+    totalItems: textsTotalItems,
+    setCurrentPage: setTextsCurrentPage,
+    setItemsPerPage: setTextsItemsPerPage
+  } = usePagination({
+    data: consolidatedTexts,
+    itemsPerPage: 10
+  });
 
   const getStatusColor = (statut: string) => {
     switch (statut) {
@@ -109,7 +213,7 @@ export function ConsolidatedTextsSection() {
 
       {/* Liste des textes consolidés */}
       <div className="grid grid-cols-1 gap-4">
-        {consolidatedTexts.map((texte) => (
+        {paginatedTexts.map((texte) => (
           <Card key={texte.id} className="hover:shadow-md transition-shadow">
             <CardHeader>
               <div className="flex items-start justify-between">
@@ -179,6 +283,16 @@ export function ConsolidatedTextsSection() {
           </Card>
         ))}
       </div>
+      
+      {/* Pagination pour les textes consolidés */}
+      <Pagination
+        currentPage={textsCurrentPage}
+        totalPages={textsTotalPages}
+        totalItems={textsTotalItems}
+        itemsPerPage={textsItemsPerPage}
+        onPageChange={setTextsCurrentPage}
+        onItemsPerPageChange={setTextsItemsPerPage}
+      />
 
       {/* Statistiques */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
