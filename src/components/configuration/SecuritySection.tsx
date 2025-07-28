@@ -5,6 +5,8 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Switch } from "@/components/ui/switch";
+import { Pagination } from "@/components/common/Pagination";
+import { usePagination } from "@/hooks/usePagination";
 import { SectionHeader } from "@/components/common/SectionHeader";
 import { AdvancedSecurityTab } from "./AdvancedSecurityTab";
 import { NewSecurityPolicyModal } from "@/components/modals/NewSecurityPolicyModal";
@@ -144,6 +146,34 @@ export function SecuritySection({ language = "fr" }: SecuritySectionProps) {
       default: return 'bg-gray-100 text-gray-800';
     }
   };
+
+  // Pagination pour les menaces détectées
+  const {
+    currentData: paginatedThreats,
+    currentPage: threatsCurrentPage,
+    totalPages: threatsTotalPages,
+    itemsPerPage: threatsItemsPerPage,
+    totalItems: threatsTotalItems,
+    setCurrentPage: setThreatsCurrentPage,
+    setItemsPerPage: setThreatsItemsPerPage
+  } = usePagination({
+    data: detectedThreats,
+    itemsPerPage: 10
+  });
+
+  // Pagination pour les logs d'audit
+  const {
+    currentData: paginatedAuditLogs,
+    currentPage: auditLogsCurrentPage,
+    totalPages: auditLogsTotalPages,
+    itemsPerPage: auditLogsItemsPerPage,
+    totalItems: auditLogsTotalItems,
+    setCurrentPage: setAuditLogsCurrentPage,
+    setItemsPerPage: setAuditLogsItemsPerPage
+  } = usePagination({
+    data: auditLogs,
+    itemsPerPage: 10
+  });
 
   return (
     <div className="space-y-6">
@@ -285,8 +315,9 @@ export function SecuritySection({ language = "fr" }: SecuritySectionProps) {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {detectedThreats.map((threat, index) => (
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              {paginatedThreats.map((threat, index) => (
               <Card key={index}>
                 <CardContent className="pt-4">
                   <div className="flex items-center justify-between">
@@ -332,6 +363,16 @@ export function SecuritySection({ language = "fr" }: SecuritySectionProps) {
               </Card>
             ))}
           </div>
+          
+          {/* Pagination pour les menaces détectées */}
+          <Pagination
+            currentPage={threatsCurrentPage}
+            totalPages={threatsTotalPages}
+            totalItems={threatsTotalItems}
+            itemsPerPage={threatsItemsPerPage}
+            onPageChange={setThreatsCurrentPage}
+            onItemsPerPageChange={setThreatsItemsPerPage}
+          />
         </TabsContent>
 
         <TabsContent value="audit" className="space-y-4">
@@ -348,8 +389,9 @@ export function SecuritySection({ language = "fr" }: SecuritySectionProps) {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            {auditLogs.map((log, index) => (
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              {paginatedAuditLogs.map((log, index) => (
               <Card key={index}>
                 <CardContent className="pt-3 pb-3">
                   <div className="flex items-center justify-between">
