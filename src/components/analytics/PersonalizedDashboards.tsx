@@ -229,7 +229,7 @@ export function PersonalizedDashboards() {
         <TabsContent value="my-dashboards" className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {/* Mon Tableau de Bord Principal en premier */}
-            {dashboards.map((dashboard) => (
+            {paginatedDashboards.map((dashboard) => (
               <Card key={dashboard.id} className="hover:shadow-md transition-shadow">
                 <CardHeader>
                   <div className="flex items-start justify-between">
@@ -336,6 +336,16 @@ export function PersonalizedDashboards() {
               </Card>
             ))}
           </div>
+          
+          {/* Pagination pour les tableaux de bord personnalisés */}
+          <Pagination
+            currentPage={dashboardsCurrentPage}
+            totalPages={dashboardsTotalPages}
+            totalItems={dashboardsTotalItems}
+            itemsPerPage={dashboardsItemsPerPage}
+            onPageChange={setDashboardsCurrentPage}
+            onItemsPerPageChange={setDashboardsItemsPerPage}
+          />
         </TabsContent>
 
         <TabsContent value="templates" className="space-y-6">
