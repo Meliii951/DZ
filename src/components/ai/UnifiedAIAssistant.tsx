@@ -1,11 +1,13 @@
 
 // @ts-nocheck
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { buttonHandlers } from '@/utils/buttonUtils';
+import { Pagination } from '@/components/common/Pagination';
+import { usePagination } from '@/hooks/usePagination';
 import { Bot, Brain, Zap, TrendingUp, MessageSquare, Sparkles, History, BarChart3, Users, Target, Shield, AlertTriangle, Search, Eye, Download } from 'lucide-react';
 import { SmartAutocomplete } from '@/components/common/SmartAutocomplete';
 
@@ -96,8 +98,30 @@ export function UnifiedAIAssistant() {
     { query: "Procédure de divorce en Algérie", time: "Il y a 2 heures", results: 15, category: "Droit de la famille" },
     { query: "Code du commerce article 544", time: "Hier", results: 8, category: "Droit commercial" },
     { query: "Loi sur l'investissement 2023", time: "Il y a 2 jours", results: 23, category: "Droit économique" },
-    { query: "Procédure administrative contentieuse", time: "Il y a 3 jours", results: 12, category: "Droit administratif" }
+    { query: "Procédure administrative contentieuse", time: "Il y a 3 jours", results: 12, category: "Droit administratif" },
+    { query: "Loi sur la protection des données", time: "Il y a 4 jours", results: 18, category: "Droit numérique" },
+    { query: "Code de procédure civile", time: "Il y a 5 jours", results: 25, category: "Droit civil" },
+    { query: "Droit du travail algérien", time: "Il y a 6 jours", results: 14, category: "Droit social" },
+    { query: "Procédure de création d'entreprise", time: "Il y a 7 jours", results: 20, category: "Droit commercial" },
+    { query: "Loi sur les marchés publics", time: "Il y a 8 jours", results: 16, category: "Droit administratif" },
+    { query: "Code pénal article 264", time: "Il y a 9 jours", results: 11, category: "Droit pénal" },
+    { query: "Procédure de divorce par consentement", time: "Il y a 10 jours", results: 13, category: "Droit de la famille" },
+    { query: "Loi sur l'investissement étranger", time: "Il y a 11 jours", results: 19, category: "Droit économique" }
   ];
+
+  // Pagination pour les recherches récentes
+  const {
+    currentData: paginatedRecentSearches,
+    currentPage: recentSearchesCurrentPage,
+    totalPages: recentSearchesTotalPages,
+    itemsPerPage: recentSearchesItemsPerPage,
+    totalItems: recentSearchesTotalItems,
+    setCurrentPage: setRecentSearchesCurrentPage,
+    setItemsPerPage: setRecentSearchesItemsPerPage
+  } = usePagination({
+    data: recentSearches,
+    itemsPerPage: 10
+  });
 
   // Insights IA
   const aiInsights: AIInsight[] = [
@@ -232,7 +256,7 @@ export function UnifiedAIAssistant() {
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {recentSearches.map((search, index) => (
+                  {paginatedRecentSearches.map((search, index) => (
                     <div key={index} className="space-y-2 p-3 bg-gray-50 rounded-lg">
                       <div className="font-medium text-sm cursor-pointer hover:text-green-600">
                         {search.query}
@@ -252,6 +276,14 @@ export function UnifiedAIAssistant() {
                       </div>
                     </div>
                   ))}
+                  <Pagination
+                    currentPage={recentSearchesCurrentPage}
+                    totalPages={recentSearchesTotalPages}
+                    totalItems={recentSearchesTotalItems}
+                    itemsPerPage={recentSearchesItemsPerPage}
+                    onPageChange={setRecentSearchesCurrentPage}
+                    onItemsPerPageChange={setRecentSearchesItemsPerPage}
+                  />
                 </CardContent>
               </Card>
 

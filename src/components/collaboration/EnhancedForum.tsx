@@ -32,30 +32,6 @@ export function EnhancedForum() {
     setShowModal(true);
   };
 
-  // Filtrer les discussions basées sur la recherche
-  const filteredDiscussions = useMemo(() => {
-    return forumData.filter(discussion =>
-      discussion.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      discussion.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      discussion.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      discussion.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
-    );
-  }, [forumData, searchQuery]);
-
-  // Pagination
-  const {
-    currentData: paginatedDiscussions,
-    currentPage,
-    totalPages,
-    itemsPerPage,
-    totalItems,
-    setCurrentPage,
-    setItemsPerPage
-  } = usePagination({
-    data: filteredDiscussions,
-    itemsPerPage: 10
-  });
-
   const forumData = [
     {
       id: 1,
@@ -146,6 +122,30 @@ export function EnhancedForum() {
       tags: ["propriété", "technologie", "innovation"]
     }
   ];
+
+  // Filtrer les discussions basées sur la recherche
+  const filteredDiscussions = useMemo(() => {
+    return forumData.filter(discussion =>
+      discussion.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      discussion.author.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      discussion.category.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      discussion.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()))
+    );
+  }, [forumData, searchQuery]);
+
+  // Pagination
+  const {
+    currentData: paginatedDiscussions,
+    currentPage,
+    totalPages,
+    itemsPerPage,
+    totalItems,
+    setCurrentPage,
+    setItemsPerPage
+  } = usePagination({
+    data: filteredDiscussions,
+    itemsPerPage: 10
+  });
 
   return (
     <div className="space-y-6">

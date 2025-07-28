@@ -1,11 +1,13 @@
 // @ts-nocheck
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { SectionHeader } from "@/components/common/SectionHeader";
+import { Pagination } from "@/components/common/Pagination";
+import { usePagination } from "@/hooks/usePagination";
 import DocumentDetailModal from "../modals/DocumentDetailModal";
 import { DocumentViewerModal } from "../modals/DocumentViewerModal";
 import { 
@@ -216,6 +218,20 @@ const LegalTextsApprovalQueue: React.FC = () => {
     const matchesType = typeFilter === 'all' || doc.legalCategory === typeFilter;
     const matchesInsertion = insertionFilter === 'all' || doc.insertionType === insertionFilter;
     return matchesSearch && matchesStatus && matchesType && matchesInsertion;
+  });
+
+  // Pagination pour les documents filtrés
+  const {
+    currentData: paginatedDocuments,
+    currentPage,
+    totalPages,
+    itemsPerPage,
+    totalItems,
+    setCurrentPage,
+    setItemsPerPage
+  } = usePagination({
+    data: filteredDocuments,
+    itemsPerPage: 10
   });
 
   const getStatusBadge = (status: string) => {
@@ -480,7 +496,7 @@ const LegalTextsApprovalQueue: React.FC = () => {
 
           {/* Documents */}
           <div className="space-y-3">
-            {filteredDocuments.map((doc) => (
+            {paginatedDocuments.map((doc) => (
               <Card 
                 key={doc.id} 
                 className={`p-4 cursor-pointer transition-all ${
@@ -532,12 +548,24 @@ const LegalTextsApprovalQueue: React.FC = () => {
             ))}
           </div>
 
-          {filteredDocuments.length === 0 && (
+          {paginatedDocuments.length === 0 && (
             <Card className="p-8 text-center">
               <FileText className="w-12 h-12 text-gray-400 mx-auto mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-2">Aucun document trouvé</h3>
               <p className="text-gray-500">Aucun document ne correspond aux critères de filtrage actuels.</p>
             </Card>
+          )}
+
+          {/* Pagination */}
+          {paginatedDocuments.length > 0 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              totalItems={totalItems}
+              itemsPerPage={itemsPerPage}
+              onPageChange={setCurrentPage}
+              onItemsPerPageChange={setItemsPerPage}
+            />
           )}
         </div>
 

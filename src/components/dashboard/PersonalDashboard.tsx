@@ -1,9 +1,11 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Pagination } from '@/components/common/Pagination';
+import { usePagination } from '@/hooks/usePagination';
 import { 
   Clock, 
   FileText, 
@@ -190,6 +192,62 @@ const recentDocuments = [
 ];
 
 export function PersonalDashboard() {
+  // Pagination pour l'activité récente
+  const {
+    currentData: paginatedRecentActivity,
+    currentPage: recentActivityCurrentPage,
+    totalPages: recentActivityTotalPages,
+    itemsPerPage: recentActivityItemsPerPage,
+    totalItems: recentActivityTotalItems,
+    setCurrentPage: setRecentActivityCurrentPage,
+    setItemsPerPage: setRecentActivityItemsPerPage
+  } = usePagination({
+    data: recentActivity,
+    itemsPerPage: 10
+  });
+
+  // Pagination pour les notifications
+  const {
+    currentData: paginatedNotifications,
+    currentPage: notificationsCurrentPage,
+    totalPages: notificationsTotalPages,
+    itemsPerPage: notificationsItemsPerPage,
+    totalItems: notificationsTotalItems,
+    setCurrentPage: setNotificationsCurrentPage,
+    setItemsPerPage: setNotificationsItemsPerPage
+  } = usePagination({
+    data: notifications,
+    itemsPerPage: 10
+  });
+
+  // Pagination pour les tâches
+  const {
+    currentData: paginatedMyTasks,
+    currentPage: myTasksCurrentPage,
+    totalPages: myTasksTotalPages,
+    itemsPerPage: myTasksItemsPerPage,
+    totalItems: myTasksTotalItems,
+    setCurrentPage: setMyTasksCurrentPage,
+    setItemsPerPage: setMyTasksItemsPerPage
+  } = usePagination({
+    data: myTasks,
+    itemsPerPage: 10
+  });
+
+  // Pagination pour les documents récents
+  const {
+    currentData: paginatedRecentDocuments,
+    currentPage: recentDocumentsCurrentPage,
+    totalPages: recentDocumentsTotalPages,
+    itemsPerPage: recentDocumentsItemsPerPage,
+    totalItems: recentDocumentsTotalItems,
+    setCurrentPage: setRecentDocumentsCurrentPage,
+    setItemsPerPage: setRecentDocumentsItemsPerPage
+  } = usePagination({
+    data: recentDocuments,
+    itemsPerPage: 10
+  });
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'completed': return 'bg-green-100 text-green-800';
@@ -239,124 +297,164 @@ export function PersonalDashboard() {
               <TabsTrigger value="recentDocuments">Documents récents</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="recentActivity" className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-6">
-              {recentActivity.map((activity) => (
-                <div key={activity.id} className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                  <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    {activity.type === 'update' && <FileText className="w-4 h-4 text-green-600" />}
-                    {activity.type === 'procedure' && <Scale className="w-4 h-4 text-green-600" />}
-                    {activity.type === 'analysis' && <BarChart3 className="w-4 h-4 text-green-600" />}
-                    {activity.type === 'comment' && <MessageSquare className="w-4 h-4 text-green-600" />}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h4 className="font-medium text-gray-900 truncate">{activity.title}</h4>
-                    <p className="text-sm text-gray-600 mt-1">{activity.description}</p>
-                    <div className="flex items-center gap-2 mt-2">
-                      <span className="text-xs text-gray-500">{activity.time}</span>
-                      <span className="text-xs text-gray-400">•</span>
-                      <span className="text-xs text-gray-500">{activity.user}</span>
-                      <Badge className={getStatusColor(activity.status)} variant="secondary">
-                        {activity.status}
-                      </Badge>
+            <TabsContent value="recentActivity" className="space-y-4 mt-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                {paginatedRecentActivity.map((activity) => (
+                  <div key={activity.id} className="flex items-start gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                    <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                      {activity.type === 'update' && <FileText className="w-4 h-4 text-green-600" />}
+                      {activity.type === 'procedure' && <Scale className="w-4 h-4 text-green-600" />}
+                      {activity.type === 'analysis' && <BarChart3 className="w-4 h-4 text-green-600" />}
+                      {activity.type === 'comment' && <MessageSquare className="w-4 h-4 text-green-600" />}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="font-medium text-gray-900 truncate">{activity.title}</h4>
+                      <p className="text-sm text-gray-600 mt-1">{activity.description}</p>
+                      <div className="flex items-center gap-2 mt-2">
+                        <span className="text-xs text-gray-500">{activity.time}</span>
+                        <span className="text-xs text-gray-400">•</span>
+                        <span className="text-xs text-gray-500">{activity.user}</span>
+                        <Badge className={getStatusColor(activity.status)} variant="secondary">
+                          {activity.status}
+                        </Badge>
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
+              <Pagination
+                currentPage={recentActivityCurrentPage}
+                totalPages={recentActivityTotalPages}
+                totalItems={recentActivityTotalItems}
+                itemsPerPage={recentActivityItemsPerPage}
+                onPageChange={setRecentActivityCurrentPage}
+                onItemsPerPageChange={setRecentActivityItemsPerPage}
+              />
             </TabsContent>
 
-            <TabsContent value="notifications" className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-6">
-              {notifications.map((notification) => (
-                <div key={notification.id} className={`flex items-start gap-3 p-3 rounded-lg transition-colors ${notification.unread ? 'bg-blue-50 hover:bg-blue-100' : 'hover:bg-gray-50'}`}>
-                  <div className="flex-shrink-0 mt-1">
-                    {getNotificationIcon(notification.type)}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h4 className={`font-medium truncate ${notification.unread ? 'text-gray-900' : 'text-gray-700'}`}>
-                      {notification.title}
-                    </h4>
-                    <p className="text-sm text-gray-600 mt-1">{notification.message}</p>
-                    <span className="text-xs text-gray-500 mt-2 block">{notification.time}</span>
-                  </div>
-                  {notification.unread && (
-                    <div className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0 mt-2"></div>
-                  )}
-                </div>
-              ))}
-            </TabsContent>
-
-            <TabsContent value="myTasks" className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-6">
-              {myTasks.map((task) => (
-                <div key={task.id} className="p-4 border rounded-lg hover:shadow-sm transition-shadow">
-                  <div className="flex items-start justify-between mb-3">
-                    <h4 className="font-medium text-gray-900 flex-1">{task.title}</h4>
-                    <div className="flex gap-2">
-                      <Badge className={getPriorityColor(task.priority)} variant="secondary">
-                        {task.priority}
-                      </Badge>
-                      <Badge className={getStatusColor(task.status)} variant="secondary">
-                        {task.status}
-                      </Badge>
+            <TabsContent value="notifications" className="space-y-4 mt-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                {paginatedNotifications.map((notification) => (
+                  <div key={notification.id} className={`flex items-start gap-3 p-3 rounded-lg transition-colors ${notification.unread ? 'bg-blue-50 hover:bg-blue-100' : 'hover:bg-gray-50'}`}>
+                    <div className="flex-shrink-0 mt-1">
+                      {getNotificationIcon(notification.type)}
                     </div>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">Progression</span>
-                      <span className="font-medium">{task.progress}%</span>
+                    <div className="flex-1 min-w-0">
+                      <h4 className={`font-medium truncate ${notification.unread ? 'text-gray-900' : 'text-gray-700'}`}>
+                        {notification.title}
+                      </h4>
+                      <p className="text-sm text-gray-600 mt-1">{notification.message}</p>
+                      <span className="text-xs text-gray-500 mt-2 block">{notification.time}</span>
                     </div>
-                    <Progress value={task.progress} className="w-full" />
+                    {notification.unread && (
+                      <div className="w-2 h-2 bg-blue-600 rounded-full flex-shrink-0 mt-2"></div>
+                    )}
                   </div>
-
-                  <div className="flex items-center justify-between mt-3 text-sm text-gray-500">
-                    <span className="flex items-center gap-1">
-                      <Calendar className="w-4 h-4" />
-                      {task.dueDate}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Users className="w-4 h-4" />
-                      {task.assignedTo}
-                    </span>
-                  </div>
-                </div>
-              ))}
+                ))}
+              </div>
+              <Pagination
+                currentPage={notificationsCurrentPage}
+                totalPages={notificationsTotalPages}
+                totalItems={notificationsTotalItems}
+                itemsPerPage={notificationsItemsPerPage}
+                onPageChange={setNotificationsCurrentPage}
+                onItemsPerPageChange={setNotificationsItemsPerPage}
+              />
             </TabsContent>
 
-            <TabsContent value="recentDocuments" className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-6">
-              {recentDocuments.map((doc) => (
-                <div key={doc.id} className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <FileText className="w-5 h-5 text-blue-600" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h4 className="font-medium text-gray-900 truncate">{doc.name}</h4>
-                    <div className="flex items-center gap-2 text-sm text-gray-500 mt-1">
-                      <Badge variant="outline">{doc.type}</Badge>
-                      <span>•</span>
-                      <span>{doc.size}</span>
-                      <span>•</span>
+            <TabsContent value="myTasks" className="space-y-4 mt-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                {paginatedMyTasks.map((task) => (
+                  <div key={task.id} className="p-4 border rounded-lg hover:shadow-sm transition-shadow">
+                    <div className="flex items-start justify-between mb-3">
+                      <h4 className="font-medium text-gray-900 flex-1">{task.title}</h4>
+                      <div className="flex gap-2">
+                        <Badge className={getPriorityColor(task.priority)} variant="secondary">
+                          {task.priority}
+                        </Badge>
+                        <Badge className={getStatusColor(task.status)} variant="secondary">
+                          {task.status}
+                        </Badge>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-gray-600">Progression</span>
+                        <span className="font-medium">{task.progress}%</span>
+                      </div>
+                      <Progress value={task.progress} className="w-full" />
+                    </div>
+
+                    <div className="flex items-center justify-between mt-3 text-sm text-gray-500">
                       <span className="flex items-center gap-1">
-                        <Eye className="w-3 h-3" />
-                        {doc.views}
+                        <Calendar className="w-4 h-4" />
+                        {task.dueDate}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Users className="w-4 h-4" />
+                        {task.assignedTo}
                       </span>
                     </div>
-                    <p className="text-xs text-gray-400 mt-1">{doc.lastModified}</p>
                   </div>
-                  <div className="flex gap-1">
-                    <Button variant="ghost" size="sm" title="Ouvrir le document">
-                      <Eye className="w-4 h-4" />
-                    </Button>
-                    <Button variant="ghost" size="sm" title="Télécharger le document">
-                      <Download className="w-4 h-4" />
-                    </Button>
-                    <Button variant="ghost" size="sm" title="Partager le document">
-                      <Share2 className="w-4 h-4" />
-                    </Button>
-                    <Button variant="ghost" size="sm" title="Ajouter aux favoris">
-                      <Star className="w-4 h-4" />
-                    </Button>
+                ))}
+              </div>
+              <Pagination
+                currentPage={myTasksCurrentPage}
+                totalPages={myTasksTotalPages}
+                totalItems={myTasksTotalItems}
+                itemsPerPage={myTasksItemsPerPage}
+                onPageChange={setMyTasksCurrentPage}
+                onItemsPerPageChange={setMyTasksItemsPerPage}
+              />
+            </TabsContent>
+
+            <TabsContent value="recentDocuments" className="space-y-4 mt-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                {paginatedRecentDocuments.map((doc) => (
+                  <div key={doc.id} className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+                    <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                      <FileText className="w-5 h-5 text-blue-600" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <h4 className="font-medium text-gray-900 truncate">{doc.name}</h4>
+                      <div className="flex items-center gap-2 text-sm text-gray-500 mt-1">
+                        <Badge variant="outline">{doc.type}</Badge>
+                        <span>•</span>
+                        <span>{doc.size}</span>
+                        <span>•</span>
+                        <span className="flex items-center gap-1">
+                          <Eye className="w-3 h-3" />
+                          {doc.views}
+                        </span>
+                      </div>
+                      <p className="text-xs text-gray-400 mt-1">{doc.lastModified}</p>
+                    </div>
+                    <div className="flex gap-1">
+                      <Button variant="ghost" size="sm" title="Ouvrir le document">
+                        <Eye className="w-4 h-4" />
+                      </Button>
+                      <Button variant="ghost" size="sm" title="Télécharger le document">
+                        <Download className="w-4 h-4" />
+                      </Button>
+                      <Button variant="ghost" size="sm" title="Partager le document">
+                        <Share2 className="w-4 h-4" />
+                      </Button>
+                      <Button variant="ghost" size="sm" title="Ajouter aux favoris">
+                        <Star className="w-4 h-4" />
+                      </Button>
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
+              <Pagination
+                currentPage={recentDocumentsCurrentPage}
+                totalPages={recentDocumentsTotalPages}
+                totalItems={recentDocumentsTotalItems}
+                itemsPerPage={recentDocumentsItemsPerPage}
+                onPageChange={setRecentDocumentsCurrentPage}
+                onItemsPerPageChange={setRecentDocumentsItemsPerPage}
+              />
             </TabsContent>
           </Tabs>
         </CardContent>
