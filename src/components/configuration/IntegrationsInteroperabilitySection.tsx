@@ -229,6 +229,16 @@ export function IntegrationsInteroperabilitySection({ language = "fr" }: Integra
               </Card>
             ))}
           </div>
+          
+          {/* Pagination pour les intégrations actives */}
+          <Pagination
+            currentPage={integrationsCurrentPage}
+            totalPages={integrationsTotalPages}
+            totalItems={integrationsTotalItems}
+            itemsPerPage={integrationsItemsPerPage}
+            onPageChange={setIntegrationsCurrentPage}
+            onItemsPerPageChange={setIntegrationsItemsPerPage}
+          />
         </TabsContent>
 
         <TabsContent value="apis" className="space-y-4">
@@ -244,7 +254,7 @@ export function IntegrationsInteroperabilitySection({ language = "fr" }: Integra
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {apiEndpoints.map((api, index) => (
+                {paginatedApiEndpoints.map((api, index) => (
                   <div key={index} className="flex flex-col p-6 bg-gray-50 rounded-lg border border-gray-200 hover:border-gray-300 transition-colors">
                     <div className="flex items-center justify-between mb-4">
                       <div className="flex items-center gap-3">
@@ -277,6 +287,16 @@ export function IntegrationsInteroperabilitySection({ language = "fr" }: Integra
                   </div>
                 ))}
               </div>
+              
+              {/* Pagination pour les endpoints API */}
+              <Pagination
+                currentPage={apiEndpointsCurrentPage}
+                totalPages={apiEndpointsTotalPages}
+                totalItems={apiEndpointsTotalItems}
+                itemsPerPage={apiEndpointsItemsPerPage}
+                onPageChange={setApiEndpointsCurrentPage}
+                onItemsPerPageChange={setApiEndpointsItemsPerPage}
+              />
               <div className="flex gap-2 mt-6">
                 <Button variant="outline">
                   <Code className="w-4 h-4 mr-2" />
@@ -297,7 +317,7 @@ export function IntegrationsInteroperabilitySection({ language = "fr" }: Integra
 
         <TabsContent value="standards" className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {standardsCompliance.map((standard, index) => (
+            {paginatedStandards.map((standard, index) => (
               <Card key={index}>
                 <CardContent className="pt-6">
                   <div className="flex items-center justify-between mb-4">
@@ -328,6 +348,16 @@ export function IntegrationsInteroperabilitySection({ language = "fr" }: Integra
               </Card>
             ))}
           </div>
+          
+          {/* Pagination pour les standards de conformité */}
+          <Pagination
+            currentPage={standardsCurrentPage}
+            totalPages={standardsTotalPages}
+            totalItems={standardsTotalItems}
+            itemsPerPage={standardsItemsPerPage}
+            onPageChange={setStandardsCurrentPage}
+            onItemsPerPageChange={setStandardsItemsPerPage}
+          />
         </TabsContent>
 
         <TabsContent value="formats" className="space-y-4">
