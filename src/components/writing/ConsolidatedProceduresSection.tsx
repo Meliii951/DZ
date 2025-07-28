@@ -3,6 +3,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
+import { Pagination } from "@/components/common/Pagination";
+import { usePagination } from "@/hooks/usePagination";
 import { 
   ClipboardList, 
   Search, 
@@ -71,8 +73,126 @@ export function ConsolidatedProceduresSection() {
       statut: "Validée",
       difficulte: "Moyen",
       taux_reussite: 85
+    },
+    {
+      id: 5,
+      titre: "Demande de carte nationale d'identité",
+      categorie: "Documents d'identité",
+      institution: "Ministère de l'Intérieur",
+      etapes: 4,
+      duree: "5-10 jours",
+      documents: 3,
+      derniereMiseAJour: "12 janvier 2024",
+      statut: "Validée",
+      difficulte: "Facile",
+      taux_reussite: 95
+    },
+    {
+      id: 6,
+      titre: "Licence d'exploitation commerciale",
+      categorie: "Commerce",
+      institution: "APC & Ministère du Commerce",
+      etapes: 8,
+      duree: "15-25 jours",
+      documents: 6,
+      derniereMiseAJour: "15 janvier 2024",
+      statut: "Validée",
+      difficulte: "Moyen",
+      taux_reussite: 88
+    },
+    {
+      id: 7,
+      titre: "Demande de visa de travail",
+      categorie: "Immigration",
+      institution: "Ministère des Affaires Étrangères",
+      etapes: 15,
+      duree: "30-60 jours",
+      documents: 12,
+      derniereMiseAJour: "18 janvier 2024",
+      statut: "En révision",
+      difficulte: "Difficile",
+      taux_reussite: 72
+    },
+    {
+      id: 8,
+      titre: "Certificat de conformité technique",
+      categorie: "Industrie",
+      institution: "Institut Algérien de Normalisation",
+      etapes: 6,
+      duree: "10-20 jours",
+      documents: 4,
+      derniereMiseAJour: "20 janvier 2024",
+      statut: "Validée",
+      difficulte: "Moyen",
+      taux_reussite: 90
+    },
+    {
+      id: 9,
+      titre: "Demande de pension de retraite",
+      categorie: "Sécurité Sociale",
+      institution: "Caisse Nationale des Retraites",
+      etapes: 7,
+      duree: "20-30 jours",
+      documents: 8,
+      derniereMiseAJour: "22 janvier 2024",
+      statut: "Validée",
+      difficulte: "Moyen",
+      taux_reussite: 82
+    },
+    {
+      id: 10,
+      titre: "Licence de transport de marchandises",
+      categorie: "Transport",
+      institution: "Ministère des Transports",
+      etapes: 12,
+      duree: "25-40 jours",
+      documents: 10,
+      derniereMiseAJour: "25 janvier 2024",
+      statut: "En révision",
+      difficulte: "Difficile",
+      taux_reussite: 78
+    },
+    {
+      id: 11,
+      titre: "Demande de carte d'invalidité",
+      categorie: "Sécurité Sociale",
+      institution: "Ministère de la Solidarité",
+      etapes: 5,
+      duree: "15-25 jours",
+      documents: 6,
+      derniereMiseAJour: "28 janvier 2024",
+      statut: "Validée",
+      difficulte: "Moyen",
+      taux_reussite: 85
+    },
+    {
+      id: 12,
+      titre: "Autorisation d'ouverture de pharmacie",
+      categorie: "Santé",
+      institution: "Ministère de la Santé",
+      etapes: 14,
+      duree: "30-45 jours",
+      documents: 12,
+      derniereMiseAJour: "30 janvier 2024",
+      statut: "Validée",
+      difficulte: "Difficile",
+      taux_reussite: 75
     }
   ];
+
+  // Pagination pour les procédures consolidées
+  const {
+    currentData: paginatedProcedures,
+    currentPage: proceduresCurrentPage,
+    totalPages: proceduresTotalPages,
+    itemsPerPage: proceduresItemsPerPage,
+    totalItems: proceduresTotalItems,
+    setCurrentPage: setProceduresCurrentPage,
+    setItemsPerPage: setProceduresItemsPerPage
+  } = usePagination({
+    data: consolidatedProcedures,
+    itemsPerPage: 10
+  });
 
   const getStatusColor = (statut: string) => {
     switch (statut) {
@@ -123,7 +243,7 @@ export function ConsolidatedProceduresSection() {
 
       {/* Liste des procédures consolidées */}
       <div className="grid grid-cols-1 gap-4">
-        {consolidatedProcedures.map((procedure) => (
+        {paginatedProcedures.map((procedure) => (
           <Card key={procedure.id} className="hover:shadow-md transition-shadow">
             <CardHeader>
               <div className="flex items-start justify-between">
@@ -207,6 +327,16 @@ export function ConsolidatedProceduresSection() {
           </Card>
         ))}
       </div>
+      
+      {/* Pagination pour les procédures consolidées */}
+      <Pagination
+        currentPage={proceduresCurrentPage}
+        totalPages={proceduresTotalPages}
+        totalItems={proceduresTotalItems}
+        itemsPerPage={proceduresItemsPerPage}
+        onPageChange={setProceduresCurrentPage}
+        onItemsPerPageChange={setProceduresItemsPerPage}
+      />
 
       {/* Statistiques */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
