@@ -5,6 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
+import { Pagination } from '@/components/common/Pagination';
+import { usePagination } from '@/hooks/usePagination';
 import { 
   MessageSquare, 
   Eye, 
@@ -38,8 +40,112 @@ export function StructuredDebatesTab() {
       status: "Planifié",
       deadline: "20 Mars 2024",
       category: "Droit économique"
+    },
+    {
+      id: 3,
+      title: "Protection des données personnelles",
+      description: "Débat sur l'application du RGPD en Algérie",
+      participants: 15,
+      status: "En cours",
+      deadline: "25 Mars 2024",
+      category: "Droit numérique"
+    },
+    {
+      id: 4,
+      title: "Réforme de la justice administrative",
+      description: "Amélioration des procédures administratives",
+      participants: 10,
+      status: "Planifié",
+      deadline: "30 Mars 2024",
+      category: "Droit administratif"
+    },
+    {
+      id: 5,
+      title: "Loi sur les énergies renouvelables",
+      description: "Développement des énergies vertes en Algérie",
+      participants: 18,
+      status: "En cours",
+      deadline: "5 Avril 2024",
+      category: "Droit environnemental"
+    },
+    {
+      id: 6,
+      title: "Réforme du système bancaire",
+      description: "Modernisation du secteur bancaire algérien",
+      participants: 14,
+      status: "Planifié",
+      deadline: "10 Avril 2024",
+      category: "Droit financier"
+    },
+    {
+      id: 7,
+      title: "Protection des consommateurs",
+      description: "Renforcement des droits des consommateurs",
+      participants: 22,
+      status: "En cours",
+      deadline: "15 Avril 2024",
+      category: "Droit commercial"
+    },
+    {
+      id: 8,
+      title: "Loi sur la propriété intellectuelle",
+      description: "Protection des droits d'auteur et brevets",
+      participants: 9,
+      status: "Planifié",
+      deadline: "20 Avril 2024",
+      category: "Droit de la propriété"
+    },
+    {
+      id: 9,
+      title: "Réforme du système éducatif",
+      description: "Modernisation de l'enseignement supérieur",
+      participants: 16,
+      status: "En cours",
+      deadline: "25 Avril 2024",
+      category: "Droit de l'éducation"
+    },
+    {
+      id: 10,
+      title: "Loi sur la santé publique",
+      description: "Amélioration du système de santé",
+      participants: 20,
+      status: "Planifié",
+      deadline: "30 Avril 2024",
+      category: "Droit de la santé"
+    },
+    {
+      id: 11,
+      title: "Protection de l'environnement",
+      description: "Mesures pour la préservation de l'environnement",
+      participants: 13,
+      status: "En cours",
+      deadline: "5 Mai 2024",
+      category: "Droit environnemental"
+    },
+    {
+      id: 12,
+      title: "Réforme du système fiscal",
+      description: "Simplification du système fiscal algérien",
+      participants: 17,
+      status: "Planifié",
+      deadline: "10 Mai 2024",
+      category: "Droit fiscal"
     }
   ];
+
+  // Pagination pour les débats structurés
+  const {
+    currentData: paginatedDebates,
+    currentPage: debatesCurrentPage,
+    totalPages: debatesTotalPages,
+    itemsPerPage: debatesItemsPerPage,
+    totalItems: debatesTotalItems,
+    setCurrentPage: setDebatesCurrentPage,
+    setItemsPerPage: setDebatesItemsPerPage
+  } = usePagination({
+    data: debates,
+    itemsPerPage: 10
+  });
 
   const handleParticipate = (debateTitle: string) => {
     buttonHandlers.generic(`Participer au débat: ${debateTitle}`, 'Rejoindre la discussion', 'Débats')();
@@ -76,7 +182,7 @@ export function StructuredDebatesTab() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {debates.map((debate) => (
+        {paginatedDebates.map((debate) => (
           <Card key={debate.id} className="hover:shadow-lg transition-shadow">
             <CardHeader>
               <div className="flex items-start justify-between">
