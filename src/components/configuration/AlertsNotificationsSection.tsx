@@ -319,6 +319,7 @@ export function AlertsNotificationsSection({ language = "fr" }: AlertsNotificati
                 </CardContent>
               </Card>
             ))}
+            </div>
           </div>
           
           {/* Pagination pour les alertes générales */}
@@ -404,6 +405,7 @@ export function AlertsNotificationsSection({ language = "fr" }: AlertsNotificati
                 </CardContent>
               </Card>
             ))}
+            </div>
           </div>
           
           {/* Pagination pour les alertes personnalisées */}
@@ -485,6 +487,7 @@ export function AlertsNotificationsSection({ language = "fr" }: AlertsNotificati
                 </CardContent>
               </Card>
             ))}
+            </div>
           </div>
           
           {/* Pagination pour les notifications push */}

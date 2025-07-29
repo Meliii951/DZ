@@ -335,8 +335,6 @@ export function NomenclatureSection({ language = "fr" }: NomenclatureSectionProp
     data: filteredSignatories,
     itemsPerPage: 10
   });
-  const endLegalTypesIndex = startLegalTypesIndex + legalTypesPerPage;
-  const currentLegalTypes = filteredLegalTypes.slice(startLegalTypesIndex, endLegalTypesIndex);
 
   // Pagination pour les organisations (20 par page)
   const organizationsPerPage = 20;

@@ -300,7 +300,7 @@ export function UnifiedModalSystem({ activeSection }: UnifiedModalSystemProps) {
         <h4 className="font-semibold mb-3">⏱️ Procédures par Délai</h4>
         <div className="grid grid-cols-3 gap-4">
           <div className="text-center p-3 bg-red-100 rounded">
-            <div className="text-2xl font-bold text-red-600">< 1j</div>
+            <div className="text-2xl font-bold text-red-600">&lt; 1j</div>
             <div className="text-sm text-red-800">Urgent</div>
           </div>
           <div className="text-center p-3 bg-yellow-100 rounded">
@@ -308,7 +308,7 @@ export function UnifiedModalSystem({ activeSection }: UnifiedModalSystemProps) {
             <div className="text-sm text-yellow-800">Rapide</div>
           </div>
           <div className="text-center p-3 bg-green-100 rounded">
-            <div className="text-2xl font-bold text-green-600">> 7j</div>
+            <div className="text-2xl font-bold text-green-600">&gt; 7j</div>
             <div className="text-sm text-green-800">Standard</div>
           </div>
         </div>

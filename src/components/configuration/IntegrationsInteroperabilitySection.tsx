@@ -228,6 +228,7 @@ export function IntegrationsInteroperabilitySection({ language = "fr" }: Integra
                 </CardContent>
               </Card>
             ))}
+            </div>
           </div>
           
           {/* Pagination pour les intégrations actives */}

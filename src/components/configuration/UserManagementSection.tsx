@@ -319,6 +319,7 @@ export function UserManagementSection({ language = "fr" }: UserManagementSection
                 </CardContent>
               </Card>
             ))}
+            </div>
           </div>
           
           {/* Pagination pour les rôles */}
@@ -376,6 +377,7 @@ export function UserManagementSection({ language = "fr" }: UserManagementSection
                 </CardContent>
               </Card>
             ))}
+            </div>
           </div>
           
           {/* Pagination pour les permissions */}
@@ -451,6 +453,7 @@ export function UserManagementSection({ language = "fr" }: UserManagementSection
                 </CardContent>
               </Card>
             ))}
+            </div>
           </div>
           
           {/* Pagination pour les sessions */}

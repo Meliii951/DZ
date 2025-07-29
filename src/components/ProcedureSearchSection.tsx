@@ -173,115 +173,11 @@ export function ProcedureSearchSection() {
   const popularItems = [
     {
       query: "Passeport biométrique",
-      count: "15,234 recherches",
-      category: "État civil", 
-      wilaya: "National",
-      trend: "+12%",
-      description: "Nouveau passeport électronique algérien"
-    },
-    {
-      query: "Création d'entreprise EURL",
-      count: "12,567 recherches",
-      category: "Commercial",
-      wilaya: "Alger", 
-      trend: "+18%",
-      description: "Procédure simplifiée CNRC"
-    },
-    {
-      query: "Permis de conduire",
-      count: "10,890 recherches",
-      category: "Transport",
-      wilaya: "National",
-      trend: "+15%",
-      description: "Permis de conduire catégorie B"
-    },
-    {
-      query: "Acte de naissance",
-      count: "9,456 recherches",
+      count: "32,456 recherches",
       category: "État civil",
       wilaya: "National",
-      trend: "+8%",
-      description: "Certificat de naissance"
-    },
-    {
-      query: "Carte d'identité",
-      count: "8,234 recherches",
-      category: "Identité",
-      wilaya: "National",
-      trend: "+11%",
-      description: "Carte d'identité nationale"
-    },
-    {
-      query: "Certificat de résidence",
-      count: "7,123 recherches",
-      category: "Administratif",
-      wilaya: "National",
-      trend: "+9%",
-      description: "Attestation de domicile"
-    },
-    {
-      query: "Attestation de travail",
-      count: "6,789 recherches",
-      category: "Social",
-      wilaya: "National",
-      trend: "+14%",
-      description: "Certificat d'emploi"
-    },
-    {
-      query: "Licence commerciale",
-      count: "5,456 recherches",
-      category: "Commercial",
-      wilaya: "National",
-      trend: "+16%",
-      description: "Autorisation commerciale"
-    },
-    {
-      query: "Certificat médical",
-      count: "4,567 recherches",
-      category: "Santé",
-      wilaya: "National",
-      trend: "+7%",
-      description: "Attestation médicale"
-    },
-    {
-      query: "Attestation de scolarité",
-      count: "3,890 recherches",
-      category: "Éducation",
-      wilaya: "National",
       trend: "+12%",
-      description: "Certificat d'études"
-    },
-    {
-      query: "Certificat de propriété",
-      count: "3,234 recherches",
-      category: "Propriété",
-      wilaya: "National",
-      trend: "+5%",
-      description: "Titre de propriété"
-    },
-    {
-      query: "Attestation de domicile",
-      count: "2,789 recherches",
-      category: "Administratif",
-      wilaya: "National",
-      trend: "+10%",
-      description: "Certificat de résidence"
-    }
-  ];
-
-  // Pagination pour les éléments populaires
-  const {
-    currentData: paginatedPopularItems,
-    currentPage: popularItemsCurrentPage,
-    totalPages: popularItemsTotalPages,
-    itemsPerPage: popularItemsItemsPerPage,
-    totalItems: popularItemsTotalItems,
-    setCurrentPage: setPopularItemsCurrentPage,
-    setItemsPerPage: setPopularItemsItemsPerPage
-  } = usePagination({
-    data: popularItems,
-    itemsPerPage: 10
-  });
+      description: "Passeport biométrique ordinaire et service"
     },
     {
       query: "Permis de conduire",
@@ -332,6 +228,20 @@ export function ProcedureSearchSection() {
       description: "Aptitude physique et mentale"
     }
   ];
+
+  // Pagination pour les éléments populaires
+  const {
+    currentData: paginatedPopularItems,
+    currentPage: popularItemsCurrentPage,
+    totalPages: popularItemsTotalPages,
+    itemsPerPage: popularItemsItemsPerPage,
+    totalItems: popularItemsTotalItems,
+    setCurrentPage: setPopularItemsCurrentPage,
+    setItemsPerPage: setPopularItemsItemsPerPage
+  } = usePagination({
+    data: popularItems,
+    itemsPerPage: 10
+  });
 
   const statistics = {
     monthlySearches: "247k",

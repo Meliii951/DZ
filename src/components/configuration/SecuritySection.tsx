@@ -362,6 +362,7 @@ export function SecuritySection({ language = "fr" }: SecuritySectionProps) {
                 </CardContent>
               </Card>
             ))}
+            </div>
           </div>
           
           {/* Pagination pour les menaces détectées */}
@@ -427,6 +428,7 @@ export function SecuritySection({ language = "fr" }: SecuritySectionProps) {
                 </CardContent>
               </Card>
             ))}
+            </div>
           </div>
           
           {/* Pagination pour les logs d'audit */}
