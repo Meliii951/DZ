@@ -9,6 +9,13 @@ export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
     port: 8080,
+    hmr: {
+      port: 8080,
+      overlay: false,
+    },
+    watch: {
+      usePolling: false,
+    }
   },
   define: {
     'process.env.NODE_ENV': JSON.stringify(mode),

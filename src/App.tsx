@@ -10,45 +10,110 @@ import { GlobalNotificationManager } from '@/components/common/GlobalNotificatio
 
 import { AIAutoFillGlobalManager } from '@/components/ai/AIAutoFillGlobalManager';
 import { FunctionalModalSystem } from '@/components/modals/FunctionalModalSystem';
-import '@/utils/realActionHandler'; // Initialiser le gestionnaire d'actions réelles
-import { initializeUniversalButtonHandlers } from '@/utils/universalButtonHandler';
-import { realFunctionalSystem } from '@/utils/realFunctionalButtons';
-import { initializeFunctionalSystem } from '@/utils/functionalButtonSystem';
-import { installSpecializedHandlers } from '@/utils/specializedHandlers';
-import { initializeGlobalToastSystem } from '@/utils/globalToastSystem';
-import { initializeSampleData } from '@/data/sampleData';
-import { useAppStore } from '@/stores/appStore';
+
+// Initialisation différée des handlers pour éviter les erreurs
+let handlersInitialized = false;
+
+// Composant ErrorBoundary pour capturer les erreurs
+class AppErrorBoundary extends React.Component<
+  { children: React.ReactNode },
+  { hasError: boolean; error?: Error }
+> {
+  constructor(props: { children: React.ReactNode }) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error: Error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error: Error, errorInfo: any) {
+    console.error('ErrorBoundary a capturé une erreur:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{ padding: '20px', textAlign: 'center', fontFamily: 'Arial, sans-serif' }}>
+          <h1>Quelque chose s'est mal passé</h1>
+          <p>Une erreur inattendue s'est produite.</p>
+          <button 
+            onClick={() => window.location.reload()}
+            style={{ padding: '10px 20px', margin: '10px', cursor: 'pointer' }}
+          >
+            Recharger la page
+          </button>
+          <details style={{ marginTop: '20px', textAlign: 'left' }}>
+            <summary>Détails techniques</summary>
+            <pre style={{ background: '#f5f5f5', padding: '10px', overflow: 'auto' }}>
+              {this.state.error?.stack}
+            </pre>
+          </details>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
+}
 
 function App() {
   // Initialiser les handlers universels et les données d'exemple au démarrage
   React.useEffect(() => {
-    initializeUniversalButtonHandlers();
-    initializeGlobalToastSystem();
-    
-    // Initialiser les données d'exemple seulement si le store est vide
-    const store = useAppStore.getState();
-    if (store.legalTexts.length === 0) {
-      initializeSampleData();
-    }
+    if (handlersInitialized) return;
+    handlersInitialized = true;
 
-    // SYSTÈME RÉELLEMENT FONCTIONNEL - BRANCHE LYO
-    setTimeout(() => {
-      realFunctionalSystem.initialize();
-      initializeFunctionalSystem();
-      installSpecializedHandlers();
-      console.log('🎯 BRANCHE LYO: Tous les boutons et liens sont maintenant RÉELLEMENT fonctionnels');
-    }, 2000);
+    const initializeApp = async () => {
+      try {
+        // Importation différée pour éviter les erreurs au build
+        const { initializeUniversalButtonHandlers } = await import('@/utils/universalButtonHandler');
+        const { initializeGlobalToastSystem } = await import('@/utils/globalToastSystem');
+        const { initializeSampleData } = await import('@/data/sampleData');
+        const { useAppStore } = await import('@/stores/appStore');
+        
+        initializeUniversalButtonHandlers();
+        initializeGlobalToastSystem();
+        
+        // Initialiser les données d'exemple seulement si le store est vide
+        const store = useAppStore.getState();
+        if (store.legalTexts.length === 0) {
+          initializeSampleData();
+        }
+
+        // SYSTÈME RÉELLEMENT FONCTIONNEL - BRANCHE LYO
+        setTimeout(async () => {
+          try {
+            const { realFunctionalSystem } = await import('@/utils/realFunctionalButtons');
+            const { initializeFunctionalSystem } = await import('@/utils/functionalButtonSystem');
+            const { installSpecializedHandlers } = await import('@/utils/specializedHandlers');
+            
+            realFunctionalSystem.initialize();
+            initializeFunctionalSystem();
+            installSpecializedHandlers();
+            console.log('🎯 BRANCHE LYO: Tous les boutons et liens sont maintenant RÉELLEMENT fonctionnels');
+          } catch (error) {
+            console.warn('Erreur lors de l\'initialisation des handlers avancés:', error);
+          }
+        }, 2000);
+      } catch (error) {
+        console.error('Erreur lors de l\'initialisation de l\'app:', error);
+      }
+    };
+
+    initializeApp();
   }, []);
 
   return (
-    <EnhancedSecurityProvider>
-      <UnifiedModalProvider>
+    <AppErrorBoundary>
+      <EnhancedSecurityProvider>
+        <UnifiedModalProvider>
           <BrowserRouter
-          future={{
-            v7_startTransition: true,
-            v7_relativeSplatPath: true
-          }}
-        >
+            future={{
+              v7_startTransition: true,
+              v7_relativeSplatPath: true
+            }}
+          >
             <div className="min-h-screen bg-gray-50">
               <Routes>
                 <Route path="/" element={<Index />} />
@@ -63,7 +128,8 @@ function App() {
             </div>
           </BrowserRouter>
         </UnifiedModalProvider>
-    </EnhancedSecurityProvider>
+      </EnhancedSecurityProvider>
+    </AppErrorBoundary>
   );
 }
 
