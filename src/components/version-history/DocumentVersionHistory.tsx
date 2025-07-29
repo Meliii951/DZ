@@ -284,7 +284,7 @@ export function DocumentVersionHistory({ type = 'both' }: DocumentVersionHistory
                         </div>
                         <div className="flex items-center gap-1">
                           {getStatusIcon(latestVersion.status)}
-                          <Badge size="sm" className={getStatusColor(latestVersion.status)}>
+                          <Badge className={getStatusColor(latestVersion.status)}>
                             {latestVersion.status === 'active' ? 'Actif' : 
                              latestVersion.status === 'archived' ? 'Archivé' : 'Brouillon'}
                           </Badge>

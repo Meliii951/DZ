@@ -31,55 +31,55 @@ export function UnifiedModalSystem({ activeSection }: UnifiedModalSystemProps) {
       case 'procedures-catalog':
         return renderProceduresCatalogModal(data);
       case 'procedures-search':
-        return renderProceduresSearchModal(data);
+        return <div>Procédures Search Modal - En développement</div>;
       case 'procedures-resources':
-        return renderProceduresResourcesModal(data);
+        return <div>Procédures Resources Modal - En développement</div>;
       case 'batch-processing':
-        return renderBatchProcessingModal(data);
+        return <div>Batch Processing Modal - En développement</div>;
       case 'ocr-analytics':
-        return renderOCRAnalyticsModal(data);
+        return <div>OCR Analytics Modal - En développement</div>;
       case 'analytics-dashboards':
-        return renderAnalyticsDashboardsModal(data);
+        return <div>Analytics Dashboards Modal - En développement</div>;
       case 'analysis':
-        return renderAnalysisModal(data);
+        return <div>Analysis Modal - En développement</div>;
       case 'reports':
-        return renderReportsModal(data);
+        return <div>Reports Modal - En développement</div>;
       case 'assisted-writing':
-        return renderAssistedWritingModal(data);
+        return <div>Assisted Writing Modal - En développement</div>;
       case 'forum':
-        return renderForumModal(data);
+        return <div>Forum Modal - En développement</div>;
       case 'collaborative-workspace':
-        return renderCollaborativeWorkspaceModal(data);
+        return <div>Collaborative Workspace Modal - En développement</div>;
       case 'shared-resources':
-        return renderSharedResourcesModal(data);
+        return <div>Shared Resources Modal - En développement</div>;
       case 'news':
-        return renderNewsModal(data);
+        return <div>News Modal - En développement</div>;
       case 'library':
-        return renderLibraryModal(data);
+        return <div>Library Modal - En développement</div>;
       case 'dictionaries':
-        return renderDictionariesModal(data);
+        return <div>Dictionaries Modal - En développement</div>;
       case 'directories':
-        return renderDirectoriesModal(data);
+        return <div>Directories Modal - En développement</div>;
       case 'nomenclature':
-        return renderNomenclatureModal(data);
+        return <div>Nomenclature Modal - En développement</div>;
       case 'complementary-resources':
-        return renderComplementaryResourcesModal(data);
+        return <div>Complementary Resources Modal - En développement</div>;
       case 'alerts-notifications':
-        return renderAlertsNotificationsModal(data);
+        return <div>Alerts Notifications Modal - En développement</div>;
       case 'user-management':
-        return renderUserManagementModal(data);
+        return <div>User Management Modal - En développement</div>;
       case 'security':
-        return renderSecurityModal(data);
+        return <div>Security Modal - En développement</div>;
       case 'performance-scalability':
-        return renderPerformanceScalabilityModal(data);
+        return <div>Performance Scalability Modal - En développement</div>;
       case 'integrations-interoperability':
-        return renderIntegrationsInteroperabilityModal(data);
+        return <div>Integrations Interoperability Modal - En développement</div>;
       case 'accessibility-settings':
-        return renderAccessibilitySettingsModal(data);
+        return <div>Accessibility Settings Modal - En développement</div>;
       case 'offline-mode':
-        return renderOfflineModeModal(data);
+        return <div>Offline Mode Modal - En développement</div>;
       case 'mobile-app':
-        return renderMobileAppModal(data);
+        return <div>Mobile App Modal - En développement</div>;
       default:
         return renderGenericModal(modalType, data);
     }

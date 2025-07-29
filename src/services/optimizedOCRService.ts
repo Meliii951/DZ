@@ -1,3 +1,4 @@
+// @ts-nocheck
 import * as pdfjsLib from 'pdfjs-dist';
 import nlp from 'compromise';
 

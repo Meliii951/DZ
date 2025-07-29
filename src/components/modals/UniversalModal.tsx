@@ -16,7 +16,8 @@ import {
   Download, Upload, FileText, Users, MessageSquare, Settings, 
   BarChart3, Filter, Star, BookOpen, Languages, Eye, Printer,
   Archive, Bell, Calendar, CheckCircle, XCircle, AlertCircle,
-  Search, Brain, Bot, Database, Globe, Clock, Target, Zap
+  Search, Brain, Bot, Database, Globe, Clock, Target, Zap,
+  Play, Mic
 } from "lucide-react";
 import { ModalData } from "@/utils/modalManager";
 

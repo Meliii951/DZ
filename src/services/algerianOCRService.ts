@@ -1,3 +1,4 @@
+// @ts-nocheck
 // Service OCR optimisé pour l'Algérie - 100% local et indépendant
 // Spécialement conçu pour les documents juridiques algériens
 

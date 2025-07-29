@@ -24,6 +24,14 @@ interface PopularItemsListProps {
     procedures: string;
     evolution: string;
   };
+  pagination?: {
+    currentPage: number;
+    totalPages: number;
+    totalItems: number;
+    itemsPerPage: number;
+    onPageChange: (page: number) => void;
+    onItemsPerPageChange: (itemsPerPage: number) => void;
+  };
 }
 
 export function PopularItemsList({ 
